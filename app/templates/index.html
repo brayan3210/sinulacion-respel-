@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+{% block title %}Inicio — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+
+<!-- ===== HERO ===== -->
+<section class="hero-section py-5">
+  <div class="container py-4">
+    <div class="row align-items-center gy-5">
+
+      <div class="col-lg-7">
+        <div class="badge bg-accent text-dark fw-semibold mb-3 px-3 py-2">
+          <i class="bi bi-shield-check me-1"></i>Simulador Educativo — Normativa Colombiana
+        </div>
+        <h1 class="display-5 fw-bold text-white mb-3 lh-sm">
+          SimuRESPEL <span class="text-accent">Web</span>
+        </h1>
+        <p class="lead text-light mb-4">
+          Simulador interactivo para la identificación, clasificación y manejo de
+          residuos en Colombia. Guiado por la normativa ambiental vigente: RESPEL,
+          RAEE y residuos sólidos.
+        </p>
+
+        <div class="alert alert-warning border-warning bg-warning bg-opacity-15 text-warning-emphasis mb-4" role="alert">
+          <i class="bi bi-mortarboard-fill me-2"></i>
+          <strong>Herramienta de aprendizaje.</strong> Los resultados son orientativos
+          y educativos. No constituyen dictamen legal ni sustituyen asesoría ambiental especializada.
+        </div>
+
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-4 shadow">
+            <i class="bi bi-play-circle-fill me-2"></i>Iniciar simulación
+          </a>
+          <a href="{{ url_for('main.normativa') }}" class="btn btn-outline-light btn-lg px-4">
+            <i class="bi bi-journal-text me-2"></i>Ver normativa
+          </a>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div class="row g-3">
+          <div class="col-6">
+            <div class="card-residuo card-respel h-100 text-center p-3">
+              <i class="bi bi-exclamation-octagon-fill display-5 mb-2"></i>
+              <div class="fw-bold">RESPEL</div>
+              <small class="opacity-75">Residuos Peligrosos</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-residuo card-raee h-100 text-center p-3">
+              <i class="bi bi-lightning-charge-fill display-5 mb-2"></i>
+              <div class="fw-bold">RAEE</div>
+              <small class="opacity-75">Aparatos Eléctricos</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-residuo card-organico h-100 text-center p-3">
+              <i class="bi bi-tree-fill display-5 mb-2"></i>
+              <div class="fw-bold">Orgánico</div>
+              <small class="opacity-75">Aprovechable</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card-residuo card-aprovechable h-100 text-center p-3">
+              <i class="bi bi-recycle display-5 mb-2"></i>
+              <div class="fw-bold">Reciclable</div>
+              <small class="opacity-75">Aprovechable</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== FLUJO DEL SIMULADOR ===== -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-institucional">¿Cómo funciona el simulador?</h2>
+      <p class="text-muted">Un flujo guiado en cuatro pasos para clasificar cualquier residuo</p>
+    </div>
+
+    <div class="row g-4">
+      {% set pasos = [
+        ('1', 'bi-pencil-square', 'Ingreso de datos', 'Describe el residuo: nombre, actividad generadora, sector, estado físico, cantidad mensual y características especiales.', 'text-institucional'),
+        ('2', 'bi-diagram-3', 'Clasificación inicial', 'El sistema identifica el tipo de residuo y determina si requiere evaluación de criterios de peligrosidad.', 'text-warning'),
+        ('3', 'bi-shield-exclamation', 'Evaluación de peligrosidad', 'Si aplica, evalúas los criterios CRETIP+R del Decreto 4741/2005 para determinar si el residuo es RESPEL.', 'text-danger'),
+        ('4', 'bi-clipboard2-check', 'Resultado y reporte', 'Obtienes clasificación, ruta normativa, obligaciones del generador y recomendaciones de cumplimiento.', 'text-success'),
+      ] %}
+      {% for num, icono, titulo, desc, color in pasos %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4 card-hover">
+          <div class="step-badge mx-auto mb-3">{{ num }}</div>
+          <i class="bi {{ icono }} {{ color }} display-5 mb-3"></i>
+          <h5 class="fw-semibold">{{ titulo }}</h5>
+          <p class="text-muted small mb-0">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="{{ url_for('main.simulacion') }}" class="btn btn-institucional btn-lg px-5">
+        <i class="bi bi-arrow-right-circle me-2"></i>Comenzar ahora
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MARCO NORMATIVO ===== -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-institucional">Marco normativo ambiental</h2>
+      <p class="text-muted">Las normas que guían cada decisión del simulador</p>
+    </div>
+
+    <div class="row g-4">
+      {% set normas = [
+        ('Decreto 4741/2005', 'bi-exclamation-octagon', 'danger', 'Eje principal del proyecto. Regula la prevención y manejo de RESPEL en Colombia: definición, criterios de identificación, obligaciones del generador, almacenamiento, transporte y disposición.'),
+        ('Resolución 1362/2007', 'bi-person-badge', 'primary', 'Define los requisitos del Registro de Generadores de RESPEL. Establece las categorías de generador: grande, mediano y pequeño, según la cantidad mensual generada.'),
+        ('Ley 1672/2013', 'bi-lightning-charge', 'warning', 'Lineamientos de política pública para la gestión de RAEE. Consagra el principio de responsabilidad extendida del productor en Colombia.'),
+        ('Resolución 851/2022', 'bi-phone', 'warning', 'Actualiza los lineamientos para los sistemas de recolección y gestión de RAEE, en concordancia con la Ley 1672/2013.'),
+        ('Resolución 2184/2019', 'bi-palette', 'success', 'Establece el código de colores nacional para la separación de residuos en la fuente: verde (orgánicos), blanco (aprovechables) y negro (no aprovechables).'),
+        ('Decreto 1077/2015', 'bi-building', 'info', 'Marco complementario para residuos sólidos: separación en la fuente, aprovechamiento y servicio público de aseo. Compila la normativa del sector habitacional.'),
+      ] %}
+      {% for nombre, icono, color, desc in normas %}
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm card-hover">
+          <div class="card-body p-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="icon-box bg-{{ color }} bg-opacity-15 text-{{ color }} rounded-3 p-2">
+                <i class="bi {{ icono }} fs-4"></i>
+              </div>
+              <h6 class="fw-bold mb-0 text-institucional">{{ nombre }}</h6>
+            </div>
+            <p class="text-muted small mb-0">{{ desc }}</p>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="{{ url_for('main.normativa') }}" class="btn btn-outline-institucional">
+        <i class="bi bi-journal-text me-2"></i>Ver marco normativo completo
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== USUARIOS OBJETIVO ===== -->
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-institucional">¿Para quién es esta herramienta?</h2>
+    </div>
+    <div class="row g-4 justify-content-center">
+      {% set usuarios = [
+        ('bi-mortarboard', 'Estudiantes', 'Aprende de forma práctica cómo se clasifica y gestiona cada tipo de residuo según la normativa colombiana vigente.'),
+        ('bi-person-workspace', 'Docentes', 'Usa el simulador como herramienta pedagógica en cursos de gestión ambiental, ingeniería o ciencias de la salud.'),
+        ('bi-building-gear', 'Pequeñas empresas', 'Identifica si tus residuos son RESPEL, RAEE u ordinarios y conoce las obligaciones básicas que debes cumplir.'),
+        ('bi-bank', 'Instituciones', 'Hospitales, colegios y entidades públicas pueden verificar la correcta clasificación de sus residuos generados.'),
+      ] %}
+      {% for icono, titulo, desc in usuarios %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4 card-hover">
+          <i class="bi {{ icono }} display-4 text-institucional mb-3"></i>
+          <h6 class="fw-bold">{{ titulo }}</h6>
+          <p class="text-muted small mb-0">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA FINAL ===== -->
+<section class="py-5 bg-institucional">
+  <div class="container text-center">
+    <h2 class="fw-bold text-white mb-3">Comienza tu simulación ahora</h2>
+    <p class="text-light mb-4">En minutos sabrás cómo clasificar y manejar tu residuo según la normativa colombiana.</p>
+    <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-5 shadow">
+      <i class="bi bi-play-circle-fill me-2"></i>Iniciar simulación gratuita
+    </a>
+  </div>
+</section>
+
+{% endblock %}

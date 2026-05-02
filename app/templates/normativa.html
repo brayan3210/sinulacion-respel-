@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% block title %}Marco Normativo Ambiental — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="row">
+    <div class="col-lg-10 mx-auto">
+
+      <div class="mb-5 text-center">
+        <h1 class="fw-bold text-institucional">Marco Normativo Ambiental</h1>
+        <p class="lead text-muted">
+          Las normas colombianas que fundamentan la lógica de clasificación del simulador.
+          Esta referencia es de carácter educativo.
+        </p>
+      </div>
+
+      <!-- Norma 1: Decreto 4741/2005 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-danger text-white py-3">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 fw-bold">
+              <i class="bi bi-exclamation-octagon me-2"></i>Decreto 4741 de 2005
+            </h5>
+            <span class="badge bg-white text-danger">Eje principal — RESPEL</span>
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Prevención y manejo de residuos o desechos peligrosos</p>
+          <p class="text-muted mb-3">Ministerio de Ambiente, Vivienda y Desarrollo Territorial</p>
+          <p>
+            Regula la prevención y el manejo de los residuos o desechos peligrosos (RESPEL) generados
+            en el marco de la gestión integral. Es el eje central del simulador y de la política de
+            gestión de residuos peligrosos en Colombia.
+          </p>
+          <div class="row g-3 mt-2">
+            {% set aspectos = [
+              ('Definición de RESPEL', 'Establece qué se considera residuo peligroso y los criterios de identificación: CRETIP+R (corrosivo, reactivo, explosivo, tóxico, inflamable, patogénico/infeccioso, radiactivo).', 'Art. 3 y 6'),
+              ('Obligaciones del generador', 'Establece 9 obligaciones específicas para los generadores, desde la identificación hasta la conservación de certificados de disposición final.', 'Art. 10'),
+              ('Almacenamiento', 'Define las condiciones técnicas para el almacenamiento temporal de RESPEL en las instalaciones del generador.', 'Art. 16'),
+              ('Envases contaminados', 'Aclara que los envases, empaques y embalajes que hayan contenido sustancias o materiales peligrosos deben tratarse como RESPEL.', 'Art. 10 num. 1'),
+            ] %}
+            {% for titulo, desc, articulo in aspectos %}
+            <div class="col-md-6">
+              <div class="p-3 bg-danger bg-opacity-10 rounded-3 h-100">
+                <div class="fw-semibold small text-danger mb-1">{{ titulo }}</div>
+                <p class="small text-muted mb-1">{{ desc }}</p>
+                <span class="badge bg-danger bg-opacity-20 text-danger" style="font-size:10px;">{{ articulo }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Norma 2: Resolución 1362/2007 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white py-3">
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-person-badge me-2"></i>Resolución 1362 de 2007
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Registro de Generadores de Residuos o Desechos Peligrosos</p>
+          <p class="text-muted mb-3">Ministerio de Ambiente, Vivienda y Desarrollo Territorial</p>
+          <p>
+            Establece los requisitos y el procedimiento para el Registro de Generadores de RESPEL
+            ante las autoridades ambientales. Define las categorías de generador según la cantidad
+            mensual generada y las obligaciones de reporte asociadas.
+          </p>
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered small">
+              <thead class="table-primary">
+                <tr>
+                  <th>Categoría</th>
+                  <th>Cantidad mensual (kg)</th>
+                  <th>Obligación principal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Grande Generador</strong></td>
+                  <td>≥ 1.000 kg/mes</td>
+                  <td>Registro obligatorio + reporte anual</td>
+                </tr>
+                <tr>
+                  <td><strong>Mediano Generador</strong></td>
+                  <td>100 – 999 kg/mes</td>
+                  <td>Registro obligatorio + reporte periódico</td>
+                </tr>
+                <tr>
+                  <td><strong>Pequeño Generador</strong></td>
+                  <td>10 – 99 kg/mes</td>
+                  <td>Verificar con autoridad ambiental local</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Norma 3: Ley 1672/2013 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-warning py-3">
+          <h5 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-lightning-charge me-2"></i>Ley 1672 de 2013
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Política pública para la gestión de Residuos de Aparatos Eléctricos y Electrónicos (RAEE)</p>
+          <p class="text-muted mb-3">Congreso de la República de Colombia</p>
+          <p>
+            Establece los lineamientos de política pública para la gestión integral de los RAEE en Colombia.
+            Introduce el principio de <strong>responsabilidad extendida del productor (REP)</strong>,
+            por el cual los fabricantes e importadores son responsables del ciclo de vida de sus productos.
+          </p>
+          <div class="row g-2 mt-2">
+            <div class="col-md-6">
+              <div class="p-3 bg-warning bg-opacity-10 rounded-3 h-100">
+                <div class="fw-semibold small mb-1">Responsabilidad Extendida del Productor (REP)</div>
+                <p class="small text-muted mb-0">Los fabricantes e importadores deben implementar sistemas de gestión que permitan la recolección y tratamiento de sus productos al final de su vida útil.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 bg-warning bg-opacity-10 rounded-3 h-100">
+                <div class="fw-semibold small mb-1">Obligaciones del consumidor (generador)</div>
+                <p class="small text-muted mb-0">Los usuarios no deben disponer RAEE en sistemas de recolección de residuos ordinarios. Deben entregarlos en los puntos autorizados de recolección.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Norma 4: Resolución 851/2022 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-warning py-3">
+          <h5 class="mb-0 fw-bold text-dark">
+            <i class="bi bi-phone me-2"></i>Resolución 851 de 2022
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Sistemas de Recolección Selectiva y Gestión Ambiental de RAEE</p>
+          <p class="text-muted mb-3">Ministerio de Ambiente y Desarrollo Sostenible</p>
+          <p>
+            Actualiza y regula los sistemas de recolección selectiva y gestión ambiental de RAEE en Colombia,
+            en concordancia con la Ley 1672 de 2013. Establece metas de recolección progresivas
+            y requisitos de reporte para los productores.
+          </p>
+        </div>
+      </div>
+
+      <!-- Norma 5: Resolución 2184/2019 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-success text-white py-3">
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-palette me-2"></i>Resolución 2184 de 2019
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Código de colores para la separación de residuos sólidos en la fuente</p>
+          <p class="text-muted mb-3">Ministerio de Ambiente y Desarrollo Sostenible</p>
+          <p>Establece el código de colores de aplicación nacional para la separación de residuos en la fuente.</p>
+          <div class="row g-3 mt-2">
+            {% set colores = [
+              ('Verde', '#27ae60', 'bi-tree-fill', 'Residuos orgánicos aprovechables', 'Restos de alimentos, residuos de jardín, material compostable.'),
+              ('Blanco', '#aab7b8', 'bi-recycle', 'Residuos aprovechables (reciclables)', 'Papel, cartón, plástico, vidrio, metales. Deben estar limpios y secos.'),
+              ('Negro', '#2c3e50', 'bi-trash3-fill', 'Residuos no aprovechables', 'Servilletas, icopor, residuos sanitarios, envases sucios. Van al relleno sanitario.'),
+            ] %}
+            {% for nombre, color, icono, titulo, desc in colores %}
+            <div class="col-md-4">
+              <div class="text-center p-3 rounded-3 shadow-sm" style="border: 3px solid {{ color }}; background: {{ color }}22;">
+                <div class="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center"
+                     style="width:56px;height:56px;background:{{ color }};">
+                  <i class="bi {{ icono }} text-white fs-4"></i>
+                </div>
+                <div class="fw-bold" style="color:{{ color }}">Contenedor {{ nombre }}</div>
+                <div class="fw-semibold small mb-1">{{ titulo }}</div>
+                <p class="text-muted small mb-0">{{ desc }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Norma 6: Decreto 1077/2015 -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-info text-white py-3">
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-building me-2"></i>Decreto 1077 de 2015
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Decreto Único Reglamentario del Sector Vivienda, Ciudad y Territorio</p>
+          <p class="text-muted mb-3">Presidencia de la República de Colombia</p>
+          <p>
+            Compila y reglamenta el servicio público de aseo, incluyendo la separación en la fuente,
+            el aprovechamiento de residuos y la disposición final en rellenos sanitarios autorizados.
+            Complementa las normas de residuos sólidos no peligrosos.
+          </p>
+        </div>
+      </div>
+
+      <!-- GTC 24 -->
+      <div class="card border-0 shadow-sm mb-5">
+        <div class="card-header bg-secondary text-white py-3">
+          <h5 class="mb-0 fw-bold">
+            <i class="bi bi-bookmark-check me-2"></i>GTC 24 — Guía Técnica Colombiana
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <p class="fw-semibold mb-1">Gestión Ambiental — Residuos Sólidos — Guía para la separación en la fuente</p>
+          <p class="text-muted mb-3">ICONTEC — Instituto Colombiano de Normas Técnicas y Certificación</p>
+          <p>
+            Referencia técnica complementaria para la clasificación y separación de residuos en la fuente.
+            Es una <strong>guía técnica</strong>, no una norma jurídica obligatoria. Se usa como
+            apoyo metodológico para la implementación de programas de separación.
+          </p>
+          <div class="alert alert-light border small mb-0">
+            <i class="bi bi-info-circle me-1 text-muted"></i>
+            En este simulador, la GTC 24 se utiliza como referencia técnica complementaria.
+            Las normas jurídicas vinculantes son los decretos y resoluciones del MADS.
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <a href="{{ url_for('main.simulacion') }}" class="btn btn-institucional btn-lg px-5 me-2">
+          <i class="bi bi-play-circle me-2"></i>Ir al simulador
+        </a>
+        <a href="{{ url_for('main.glosario') }}" class="btn btn-outline-secondary px-4">
+          <i class="bi bi-book me-2"></i>Consultar glosario
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

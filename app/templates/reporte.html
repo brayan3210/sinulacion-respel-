@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reporte de Simulación — SimuRESPEL Web</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; font-size: 13px; color: #1a1a2e; }
+    .reporte-header { background: #1a3a5c; color: white; padding: 24px; border-radius: 8px 8px 0 0; }
+    .reporte-badge { display:inline-block; padding:6px 16px; border-radius:20px; font-weight:600; font-size:14px; }
+    .badge-danger  { background:#c0392b; color:white; }
+    .badge-warning { background:#d68910; color:white; }
+    .badge-success { background:#1e8449; color:white; }
+    .badge-info    { background:#2471a3; color:white; }
+    .badge-dark    { background:#424242; color:white; }
+    .badge-secondary { background:#7f8c8d; color:white; }
+    .seccion { border-left: 4px solid #1a3a5c; padding-left: 12px; margin-bottom: 20px; }
+    .seccion-danger { border-color: #c0392b; }
+    .seccion-warning { border-color: #d68910; }
+    .label-cell { color: #5d6d7e; font-weight: 500; width: 35%; vertical-align: top; }
+    .obligacion-item { padding: 8px; border-left: 3px solid #c0392b; margin-bottom: 8px; background: #fdf2f2; }
+    .norma-badge { background: #eaecee; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; color: #1a3a5c; display: inline-block; }
+    .aviso-edu { background: #fff3cd; border: 1px solid #ffc107; padding: 10px 14px; border-radius: 6px; font-size: 11px; color: #856404; margin-top: 16px; }
+    .criterio-badge { display:inline-block; background:#c0392b; color:white; padding:3px 10px; border-radius:12px; font-size:11px; margin:2px; }
+    .rec-item { padding: 6px 0; border-bottom: 1px solid #eee; font-size: 12px; }
+    .rec-item:last-child { border-bottom: none; }
+    .color-box { display:inline-block; width:16px; height:16px; border-radius:3px; vertical-align:middle; margin-right:6px; }
+    @media print {
+      .no-print { display: none !important; }
+      body { font-size: 11px; }
+      .container { max-width: 100%; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body class="bg-white">
+
+<div class="container py-4" style="max-width: 900px;">
+
+  <!-- Botón imprimir -->
+  <div class="d-flex justify-content-between mb-3 no-print">
+    <a href="{{ url_for('main.resultado') }}" class="btn btn-sm btn-outline-secondary">
+      <i class="bi bi-arrow-left me-1"></i>Volver al resultado
+    </a>
+    <button onclick="window.print()" class="btn btn-sm btn-primary">
+      <i class="bi bi-printer me-1"></i>Imprimir / Guardar PDF
+    </button>
+  </div>
+
+  <!-- Encabezado del reporte -->
+  <div class="reporte-header mb-0">
+    <div class="d-flex justify-content-between align-items-start">
+      <div>
+        <h4 class="mb-1 fw-bold">
+          <i class="bi bi-recycle me-2"></i>SimuRESPEL Web
+        </h4>
+        <p class="mb-0 opacity-75 small">Simulador Educativo de Manejo Integral de Residuos — Colombia</p>
+      </div>
+      <div class="text-end small opacity-75">
+        <div><i class="bi bi-calendar me-1"></i>{{ fecha }}</div>
+        <div>Reporte de simulación orientativo</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="border border-top-0 p-4 mb-4">
+
+    <!-- Resultado principal -->
+    <div class="text-center py-3 mb-4 bg-light rounded">
+      <p class="text-muted small mb-1">Clasificación obtenida</p>
+      <div class="reporte-badge badge-{{ resultado.badge_color }} mb-2">
+        {{ resultado.clasificacion_corta }}
+      </div>
+      <h5 class="fw-bold mb-2">{{ resultado.clasificacion }}</h5>
+      <p class="text-muted small mb-0">{{ resultado.descripcion_resultado }}</p>
+    </div>
+
+    <!-- Datos del residuo -->
+    <div class="seccion mb-4">
+      <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size:11px; letter-spacing:1px;">
+        1. Datos del residuo evaluado
+      </h6>
+      <table class="table table-sm table-borderless mb-0">
+        <tbody>
+          <tr>
+            <td class="label-cell">Nombre del residuo</td>
+            <td class="fw-semibold">{{ datos.get('nombre_residuo','—') }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Actividad generadora</td>
+            <td>{{ datos.get('actividad_generadora','—') or '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Sector / fuente</td>
+            <td>{{ datos.get('sector_fuente','—') or '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Estado físico</td>
+            <td>{{ datos.get('estado_fisico','—') or '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Cantidad mensual estimada</td>
+            <td>
+              {% if datos.get('cantidad_mensual') %}
+                {{ datos.get('cantidad_mensual') }} {{ datos.get('unidad_cantidad','kg') }}/mes
+              {% else %}No especificada{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td class="label-cell">Material / componente principal</td>
+            <td>{{ datos.get('material_principal','—') or '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Lugar de generación</td>
+            <td>{{ datos.get('lugar_generacion','—') or '—' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">Condiciones especiales</td>
+            <td>
+              {% set condiciones = [] %}
+              {% if datos.get('proviene_electronico') %}{% set _ = condiciones.append('Proviene de aparato eléctrico/electrónico') %}{% endif %}
+              {% if datos.get('contacto_quimico') %}{% set _ = condiciones.append('Tuvo contacto con sustancias químicas/biológicas') %}{% endif %}
+              {% if datos.get('mezclado') %}{% set _ = condiciones.append('Mezclado con otros residuos') %}{% endif %}
+              {% if datos.get('envase_contaminado') %}{% set _ = condiciones.append('Envase/empaque contaminado con sustancia peligrosa') %}{% endif %}
+              {% if condiciones %}
+                {{ condiciones | join(' · ') }}
+              {% else %}
+                Ninguna declarada
+              {% endif %}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Criterios de peligrosidad -->
+    {% set criterios = datos.get('criterios_peligrosidad', {}) %}
+    {% if criterios %}
+    <div class="seccion seccion-danger mb-4">
+      <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size:11px; letter-spacing:1px;">
+        2. Criterios de peligrosidad evaluados (Decreto 4741/2005, Art. 6)
+      </h6>
+      {% set nombres = {'corrosivo':'Corrosivo','reactivo':'Reactivo','explosivo':'Explosivo','toxico':'Tóxico','inflamable':'Inflamable','infeccioso':'Infeccioso/Patogénico','radiactivo':'Radiactivo'} %}
+      <div class="mb-2">
+        {% set tiene_positivos = namespace(val=false) %}
+        {% for k, v in criterios.items() %}
+          {% if v %}{% set tiene_positivos.val = true %}{% endif %}
+        {% endfor %}
+        {% if tiene_positivos.val %}
+          <p class="text-danger fw-semibold small mb-2">Criterios detectados:</p>
+          {% for k, v in criterios.items() %}
+            {% if v %}<span class="criterio-badge">{{ nombres.get(k, k) | capitalize }}</span>{% endif %}
+          {% endfor %}
+        {% else %}
+          <span class="text-success small">Ningún criterio de peligrosidad confirmado por el usuario.</span>
+        {% endif %}
+      </div>
+      {% if resultado.criterios_detectados %}
+        {% for cd in resultado.criterios_detectados %}
+          {% if cd not in nombres.values() %}
+            <div class="small text-muted mt-1"><i class="bi bi-exclamation-circle me-1"></i>{{ cd }}</div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Clasificación y normas -->
+    <div class="seccion mb-4">
+      <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size:11px; letter-spacing:1px;">
+        3. Clasificación y marco normativo aplicable
+      </h6>
+      <table class="table table-sm table-borderless mb-0">
+        <tbody>
+          <tr>
+            <td class="label-cell">Clasificación final</td>
+            <td><strong>{{ resultado.clasificacion }}</strong></td>
+          </tr>
+          <tr>
+            <td class="label-cell">¿Es RESPEL?</td>
+            <td>{{ 'Sí' if resultado.peligroso else 'No' }}</td>
+          </tr>
+          <tr>
+            <td class="label-cell">¿Es RAEE?</td>
+            <td>{{ 'Sí' if resultado.raee else 'No' }}</td>
+          </tr>
+          {% if resultado.categoria_generador %}
+          <tr>
+            <td class="label-cell">Categoría del generador</td>
+            <td><strong>{{ resultado.categoria_generador }}</strong> (Res. 1362/2007)</td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td class="label-cell">Nivel de cumplimiento estimado</td>
+            <td>{{ resultado.nivel_cumplimiento }}</td>
+          </tr>
+        </tbody>
+      </table>
+      {% if resultado.normas_aplicables %}
+      <div class="mt-2">
+        <small class="text-muted d-block mb-1">Normas de referencia:</small>
+        {% for norma in resultado.normas_aplicables %}
+          <span class="norma-badge me-1">{{ norma.codigo }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Obligaciones -->
+    {% if resultado.peligroso and resultado.obligaciones %}
+    <div class="seccion seccion-danger mb-4">
+      <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size:11px; letter-spacing:1px;">
+        4. Obligaciones del generador (Art. 10, Decreto 4741/2005)
+      </h6>
+      {% for obl in resultado.obligaciones %}
+      <div class="obligacion-item mb-2">
+        <div class="d-flex justify-content-between align-items-start">
+          <strong class="small">{{ obl.titulo }}</strong>
+          <span class="norma-badge ms-2 flex-shrink-0">{{ obl.norma }}</span>
+        </div>
+        <p class="small text-muted mb-0 mt-1">{{ obl.descripcion }}</p>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Recomendaciones -->
+    {% if resultado.recomendaciones %}
+    <div class="seccion seccion-warning mb-4">
+      <h6 class="fw-bold text-uppercase text-muted mb-3" style="font-size:11px; letter-spacing:1px;">
+        5. Recomendaciones
+      </h6>
+      {% for rec in resultado.recomendaciones %}
+      <div class="rec-item d-flex align-items-start gap-2">
+        <i class="bi bi-arrow-right-circle text-muted mt-1 flex-shrink-0" style="font-size:11px;"></i>
+        <span>{{ rec }}</span>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Pie del reporte -->
+    <div class="aviso-edu">
+      <i class="bi bi-mortarboard me-1"></i>
+      <strong>Aviso educativo:</strong> Este reporte ha sido generado por <strong>SimuRESPEL Web</strong>,
+      un simulador de uso académico. Los resultados son orientativos y no constituyen
+      dictamen legal ni reemplazan la asesoría de un profesional ambiental o de la
+      autoridad ambiental competente (ANLA, CAR regional, DAGMA u otras).
+    </div>
+
+  </div>
+
+  <div class="text-center text-muted small no-print">
+    <a href="{{ url_for('main.nueva_simulacion') }}" class="btn btn-sm btn-outline-primary me-2">
+      <i class="bi bi-arrow-counterclockwise me-1"></i>Nueva simulación
+    </a>
+    <button onclick="window.print()" class="btn btn-sm btn-primary">
+      <i class="bi bi-printer me-1"></i>Imprimir / PDF
+    </button>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

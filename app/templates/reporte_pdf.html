@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>SimuRESPEL Web — Reporte de Simulación</title>
+<style>
+  @page {
+    size: A4;
+    margin: 2cm 2cm 2.5cm 2cm;
+    @bottom-center {
+      content: "SimuRESPEL Web — Reporte orientativo — Página " counter(page) " de " counter(pages);
+      font-size: 9px;
+      color: #7f8c8d;
+    }
+  }
+
+  body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+  }
+
+  /* ---- Encabezado ---- */
+  .hdr {
+    background-color: #1a3a5c;
+    color: white;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+  }
+  .hdr-titulo {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 0 4px 0;
+  }
+  .hdr-sub {
+    font-size: 10px;
+    color: #a9cce3;
+    margin: 0;
+  }
+  .hdr-fecha {
+    font-size: 10px;
+    color: #a9cce3;
+  }
+
+  /* ---- Clasificación banner ---- */
+  .cls-banner {
+    padding: 10px 14px;
+    margin-bottom: 18px;
+    border-left: 5px solid #1a3a5c;
+    background-color: #f0f4f8;
+  }
+  .cls-banner-respel      { border-color: #c0392b; background-color: #fdf2f2; }
+  .cls-banner-raee        { border-color: #d68910; background-color: #fef9f0; }
+  .cls-banner-organico    { border-color: #1e8449; background-color: #f0faf4; }
+  .cls-banner-aprovechable{ border-color: #2471a3; background-color: #eaf4fb; }
+  .cls-banner-otro        { border-color: #7f8c8d; background-color: #f8f9fa; }
+
+  .cls-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 6px;
+  }
+  .badge-danger  { background-color: #c0392b; }
+  .badge-warning { background-color: #d68910; }
+  .badge-success { background-color: #1e8449; }
+  .badge-info    { background-color: #2471a3; }
+  .badge-dark    { background-color: #424242; }
+  .badge-secondary { background-color: #7f8c8d; }
+
+  /* ---- Secciones ---- */
+  h2 {
+    font-size: 12px;
+    font-weight: bold;
+    color: #1a3a5c;
+    border-bottom: 2px solid #1a3a5c;
+    padding-bottom: 3px;
+    margin: 18px 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ---- Tabla de datos ---- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 14px;
+    font-size: 10.5px;
+  }
+  td, th {
+    padding: 5px 8px;
+    border: 1px solid #dee2e6;
+    vertical-align: top;
+  }
+  th {
+    background-color: #1a3a5c;
+    color: white;
+    font-weight: bold;
+    font-size: 10px;
+    text-transform: uppercase;
+  }
+  .lbl {
+    background-color: #f5f7fa;
+    color: #5d6d7e;
+    font-weight: bold;
+    width: 38%;
+  }
+
+  /* ---- Normas ---- */
+  .norma-row { padding: 4px 0; border-bottom: 1px solid #eee; }
+  .norma-codigo { font-weight: bold; color: #1a3a5c; font-size: 10px; }
+  .norma-desc   { color: #5d6d7e; font-size: 10px; }
+
+  /* ---- Criterios ---- */
+  .criterio-tag {
+    display: inline-block;
+    background-color: #c0392b;
+    color: white;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 2px;
+  }
+
+  /* ---- Obligaciones ---- */
+  .obl-item {
+    border-left: 3px solid #c0392b;
+    padding: 6px 10px;
+    margin-bottom: 7px;
+    background-color: #fdf2f2;
+    page-break-inside: avoid;
+  }
+  .obl-titulo { font-weight: bold; font-size: 10.5px; margin: 0 0 2px 0; }
+  .obl-norma  { font-size: 9px; color: #7f8c8d; }
+  .obl-desc   { font-size: 10px; color: #555; margin: 4px 0 0 0; }
+
+  /* ---- Recomendaciones ---- */
+  .rec-item {
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 10px;
+    color: #444;
+    page-break-inside: avoid;
+  }
+  .rec-item:last-child { border-bottom: none; }
+
+  /* ---- Nivel de cumplimiento ---- */
+  .nivel-box {
+    padding: 6px 10px;
+    background-color: #eaf4fb;
+    border-left: 3px solid #2471a3;
+    margin-top: 8px;
+  }
+
+  /* ---- Aviso educativo ---- */
+  .aviso {
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    padding: 8px 12px;
+    font-size: 9.5px;
+    color: #856404;
+    margin-top: 20px;
+    page-break-inside: avoid;
+  }
+
+  /* ---- Separador ---- */
+  hr { border: none; border-top: 1px solid #dee2e6; margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<!-- ENCABEZADO -->
+<div class="hdr">
+  <div style="float:right;" class="hdr-fecha">{{ fecha }}</div>
+  <p class="hdr-titulo">SimuRESPEL Web — Reporte de Simulación</p>
+  <p class="hdr-sub">Simulador educativo de manejo integral de residuos en Colombia</p>
+  <div style="clear:both;"></div>
+</div>
+
+<!-- CLASIFICACIÓN -->
+{% set cls_map = {'respel':'respel','respel_raee':'respel','raee':'raee','organico':'organico','aprovechable':'aprovechable'} %}
+{% set cls_class = cls_map.get(resultado.ruta, 'otro') %}
+<div class="cls-banner cls-banner-{{ cls_class }}">
+  <span class="cls-badge badge-{{ resultado.badge_color or 'secondary' }}">
+    {{ resultado.clasificacion_corta or 'Sin clasificar' }}
+  </span>
+  <div style="font-size:12px; font-weight:bold; margin-bottom:4px;">{{ resultado.clasificacion }}</div>
+  <div style="font-size:10px; color:#555;">{{ resultado.descripcion_resultado }}</div>
+</div>
+
+<!-- DATOS DEL RESIDUO -->
+<h2>1. Datos del residuo evaluado</h2>
+<table>
+  <tr><td class="lbl">Nombre del residuo</td>     <td><strong>{{ datos.get('nombre_residuo','—') }}</strong></td></tr>
+  <tr><td class="lbl">Actividad generadora</td>    <td>{{ datos.get('actividad_generadora','—') or '—' }}</td></tr>
+  <tr><td class="lbl">Sector / fuente</td>         <td>{{ datos.get('sector_fuente','—') or '—' }}</td></tr>
+  <tr><td class="lbl">Estado físico</td>           <td>{{ datos.get('estado_fisico','—') or '—' }}</td></tr>
+  <tr><td class="lbl">Cantidad mensual</td>
+    <td>{% if datos.get('cantidad_mensual') and datos.get('cantidad_mensual') != '0' %}
+      {{ datos.get('cantidad_mensual') }} {{ datos.get('unidad_cantidad','kg') }}/mes
+    {% else %}No especificada{% endif %}</td></tr>
+  <tr><td class="lbl">Material principal</td>      <td>{{ datos.get('material_principal','—') or '—' }}</td></tr>
+  <tr><td class="lbl">Lugar de generación</td>     <td>{{ datos.get('lugar_generacion','—') or '—' }}</td></tr>
+  <tr><td class="lbl">¿Es RESPEL?</td>             <td><strong>{{ 'Sí' if resultado.peligroso else 'No' }}</strong></td></tr>
+  <tr><td class="lbl">¿Es RAEE?</td>               <td><strong>{{ 'Sí' if resultado.raee else 'No' }}</strong></td></tr>
+  {% if resultado.categoria_generador %}
+  <tr><td class="lbl">Categoría del generador</td> <td>{{ resultado.categoria_generador }}</td></tr>
+  {% endif %}
+</table>
+
+{% set conds = [] %}
+{% if datos.get('proviene_electronico') %}{% set _ = conds.append('Proviene de AEE') %}{% endif %}
+{% if datos.get('contacto_quimico') %}{% set _ = conds.append('Contacto con sustancias peligrosas') %}{% endif %}
+{% if datos.get('mezclado') %}{% set _ = conds.append('Mezclado con otros residuos') %}{% endif %}
+{% if datos.get('envase_contaminado') %}{% set _ = conds.append('Envase/empaque contaminado') %}{% endif %}
+{% if conds %}
+<p style="font-size:10px;"><strong>Condiciones especiales:</strong> {{ conds | join(' · ') }}</p>
+{% endif %}
+
+<!-- CRITERIOS DE PELIGROSIDAD -->
+{% set criterios = datos.get('criterios_peligrosidad', {}) %}
+{% set nombres_crit = {'corrosivo':'Corrosivo','reactivo':'Reactivo','explosivo':'Explosivo','toxico':'Tóxico','inflamable':'Inflamable','infeccioso':'Infeccioso','radiactivo':'Radiactivo'} %}
+{% if resultado.criterios_detectados %}
+<h2>2. Criterios de peligrosidad detectados</h2>
+<p>
+{% for c in resultado.criterios_detectados %}
+  <span class="criterio-tag">{{ c | capitalize }}</span>
+{% endfor %}
+</p>
+<p style="font-size:9.5px; color:#555;">
+  La presencia de cualquiera de estos criterios determina la clasificación como RESPEL
+  según el Artículo 6 del Decreto 4741 de 2005.
+</p>
+{% endif %}
+
+<!-- MARCO NORMATIVO -->
+<h2>3. Marco normativo aplicable</h2>
+{% if resultado.normas_aplicables %}
+{% for norma in resultado.normas_aplicables %}
+<div class="norma-row">
+  <span class="norma-codigo">{{ norma.codigo }}</span>
+  <span class="norma-desc"> — {{ norma.descripcion }}</span>
+</div>
+{% endfor %}
+{% endif %}
+<div class="nivel-box" style="margin-top:10px;">
+  <strong>Nivel de cumplimiento estimado:</strong> {{ resultado.nivel_cumplimiento }}
+</div>
+
+<!-- OBLIGACIONES -->
+{% if resultado.peligroso and resultado.obligaciones %}
+<h2>4. Obligaciones del generador (Art. 10, Decreto 4741/2005)</h2>
+{% for obl in resultado.obligaciones %}
+<div class="obl-item">
+  <p class="obl-titulo">{{ obl.titulo }}</p>
+  <span class="obl-norma">{{ obl.norma }}</span>
+  <p class="obl-desc">{{ obl.descripcion }}</p>
+</div>
+{% endfor %}
+{% endif %}
+
+<!-- ADVERTENCIAS -->
+{% if resultado.advertencias %}
+<h2>5. Advertencias y observaciones</h2>
+{% for adv in resultado.advertencias %}
+<div style="padding:4px 0; border-bottom:1px dotted #ccc; font-size:10px;">&#9888; {{ adv }}</div>
+{% endfor %}
+{% endif %}
+
+<!-- RECOMENDACIONES -->
+{% if resultado.recomendaciones %}
+<h2>{{ '6' if (resultado.peligroso and resultado.obligaciones) else '5' }}. Recomendaciones</h2>
+{% for rec in resultado.recomendaciones %}
+<div class="rec-item">&#8227; {{ rec }}</div>
+{% endfor %}
+{% endif %}
+
+<!-- AVISO EDUCATIVO -->
+<div class="aviso">
+  <strong>&#9432; Aviso educativo:</strong>
+  Este reporte ha sido generado por <strong>SimuRESPEL Web</strong>, un simulador de uso
+  académico y orientativo. Los resultados no constituyen dictamen legal ni reemplazan la asesoría
+  de un profesional ambiental o de la autoridad ambiental competente (ANLA, CAR, DAGMA u otras).
+</div>
+
+</body>
+</html>

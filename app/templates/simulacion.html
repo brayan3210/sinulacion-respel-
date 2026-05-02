@@ -1,0 +1,432 @@
+{% extends "base.html" %}
+{% block title %}Formulario de Simulación — SimuRESPEL Web{% endblock %}
+
+{% block extra_css %}
+<style>
+  .wizard-step { display: none; }
+  .wizard-step.active { display: block; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <!-- Encabezado -->
+      <div class="mb-4">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb small">
+            <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+            <li class="breadcrumb-item active">Simulación</li>
+          </ol>
+        </nav>
+        <h1 class="h2 fw-bold text-institucional">
+          <i class="bi bi-play-circle me-2 text-accent"></i>Simulador de Clasificación de Residuos
+        </h1>
+        <p class="text-muted">
+          Complete el formulario con la información del residuo. El sistema lo guiará por las preguntas necesarias
+          para determinar su clasificación normativa y las obligaciones aplicables.
+        </p>
+      </div>
+
+      <!-- Barra de progreso del wizard -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body pb-0">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="fw-semibold text-institucional" id="wizard-titulo">Paso 1 de 3 — Identificación del residuo</span>
+            <span class="text-muted small" id="wizard-label">33%</span>
+          </div>
+          <div class="progress mb-3" style="height: 8px;">
+            <div class="progress-bar bg-institucional" id="wizard-progress" role="progressbar" style="width: 33%"></div>
+          </div>
+          <!-- Indicadores de paso -->
+          <div class="d-flex gap-0 mb-0">
+            <div class="step-indicator active" id="ind-1">
+              <div class="step-dot">1</div>
+              <small>Identificación</small>
+            </div>
+            <div class="step-indicator" id="ind-2">
+              <div class="step-dot">2</div>
+              <small>Características</small>
+            </div>
+            <div class="step-indicator" id="ind-3">
+              <div class="step-dot">3</div>
+              <small>Condiciones</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario principal -->
+      <form method="POST" action="{{ url_for('main.simulacion') }}" id="form-simulacion" novalidate>
+
+        <!-- ===== PASO 1: Identificación ===== -->
+        <div class="wizard-step active card border-0 shadow-sm" id="step-1">
+          <div class="card-header bg-institucional text-white py-3 rounded-top">
+            <h5 class="mb-0 fw-semibold">
+              <i class="bi bi-1-circle me-2"></i>Identificación del residuo
+            </h5>
+          </div>
+          <div class="card-body p-4">
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold" for="nombre_residuo">
+                Nombre del residuo <span class="text-danger">*</span>
+              </label>
+              <input type="text" class="form-control form-control-lg" id="nombre_residuo" name="nombre_residuo"
+                     placeholder="Ej: Aceite usado de motor, Batería de litio, Papel de archivo..."
+                     required maxlength="200">
+              <div class="form-text">Describa el residuo de la manera más específica posible.</div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold" for="actividad_generadora">
+                Actividad o proceso que lo genera
+              </label>
+              <input type="text" class="form-control" id="actividad_generadora" name="actividad_generadora"
+                     placeholder="Ej: Mantenimiento de vehículos, Impresión digital, Atención médica..." maxlength="300">
+              <div class="form-text">¿En qué proceso o actividad se origina este residuo?</div>
+            </div>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="sector_fuente">
+                  Sector o fuente generadora
+                </label>
+                <select class="form-select" id="sector_fuente" name="sector_fuente">
+                  <option value="">— Seleccione sector —</option>
+                  <option value="industrial">Industrial / Manufacturero</option>
+                  <option value="comercial">Comercial / Servicios</option>
+                  <option value="institucional">Institucional / Educativo</option>
+                  <option value="domestico">Doméstico / Residencial</option>
+                  <option value="hospitalario">Hospitalario / Salud</option>
+                  <option value="construccion">Construcción y Demolición</option>
+                  <option value="agropecuario">Agropecuario / Agrícola</option>
+                  <option value="otro">Otro</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="lugar_generacion">
+                  Lugar de generación
+                </label>
+                <input type="text" class="form-control" id="lugar_generacion" name="lugar_generacion"
+                       placeholder="Ciudad, municipio o tipo de instalación..." maxlength="200">
+              </div>
+            </div>
+
+            <!-- Aviso sector hospitalario -->
+            <div class="alert alert-warning mt-3 d-none" id="aviso-hospitalario">
+              <i class="bi bi-hospital me-2"></i>
+              <strong>Sector hospitalario:</strong> Los residuos de salud también están regulados por el
+              <strong>Decreto 351 de 2014</strong>. Este simulador aborda principalmente RESPEL y residuos sólidos generales.
+            </div>
+
+          </div>
+          <div class="card-footer bg-light d-flex justify-content-end py-3 rounded-bottom">
+            <button type="button" class="btn btn-institucional px-4" onclick="nextStep(1)">
+              Siguiente <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ===== PASO 2: Características físicas ===== -->
+        <div class="wizard-step card border-0 shadow-sm" id="step-2">
+          <div class="card-header bg-institucional text-white py-3 rounded-top">
+            <h5 class="mb-0 fw-semibold">
+              <i class="bi bi-2-circle me-2"></i>Características físicas del residuo
+            </h5>
+          </div>
+          <div class="card-body p-4">
+
+            <div class="row g-3 mb-4">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="estado_fisico">Estado físico</label>
+                <select class="form-select" id="estado_fisico" name="estado_fisico">
+                  <option value="">— Seleccione —</option>
+                  <option value="solido">Sólido</option>
+                  <option value="liquido">Líquido</option>
+                  <option value="lodo">Lodo / Semisólido</option>
+                  <option value="gas">Gas / Vapor</option>
+                  <option value="semiliquido">Semilíquido / Pastoso</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold">Cantidad estimada mensual</label>
+                <div class="input-group">
+                  <input type="number" class="form-control" id="cantidad_mensual" name="cantidad_mensual"
+                         min="0" step="0.01" placeholder="0">
+                  <select class="form-select" name="unidad_cantidad" style="max-width:90px;">
+                    <option value="kg">kg</option>
+                    <option value="ton">ton</option>
+                    <option value="L">L</option>
+                    <option value="m3">m³</option>
+                  </select>
+                </div>
+                <div class="form-text">Dato clave para determinar la categoría de generador RESPEL (Res. 1362/2007).</div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold" for="material_principal">
+                Tipo de material o componente principal
+              </label>
+              <select class="form-select form-select-lg" id="material_principal" name="material_principal">
+                <option value="">— Seleccione el material principal —</option>
+                <optgroup label="Residuos no peligrosos — Orgánicos">
+                  <option value="organico">Orgánico / Restos de alimentos</option>
+                  <option value="compostable">Compostable / Residuos de jardín</option>
+                </optgroup>
+                <optgroup label="Residuos no peligrosos — Aprovechables">
+                  <option value="papel_carton">Papel / Cartón</option>
+                  <option value="plastico">Plástico</option>
+                  <option value="vidrio">Vidrio</option>
+                  <option value="metal">Metal / Chatarra</option>
+                  <option value="textil">Textil / Telas</option>
+                </optgroup>
+                <optgroup label="Residuos especiales">
+                  <option value="especial">Residuo especial (llantas, escombros, etc.)</option>
+                  <option value="electronicos">Aparatos eléctricos / electrónicos (RAEE)</option>
+                  <option value="componentes_electronicos">Componentes electrónicos / tarjetas</option>
+                </optgroup>
+                <optgroup label="Residuos potencialmente peligrosos">
+                  <option value="quimico">Sustancia o residuo químico</option>
+                  <option value="aceites">Aceites usados / lubricantes</option>
+                  <option value="baterias">Baterías / Pilas</option>
+                  <option value="medicamentos">Medicamentos / Fármacos vencidos</option>
+                  <option value="biologico">Biológico / Patogénico</option>
+                  <option value="radiactivo">Radiactivo</option>
+                </optgroup>
+                <optgroup label="Otros">
+                  <option value="otro">Otro / No especificado</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <!-- Alerta dinámica según material -->
+            <div class="alert alert-danger d-none" id="aviso-peligroso">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <strong>Atención:</strong> El material seleccionado puede presentar características de peligrosidad.
+              En el siguiente paso evaluaremos los criterios CRETIP+R del <strong>Decreto 4741 de 2005</strong>.
+            </div>
+            <div class="alert alert-warning d-none" id="aviso-raee">
+              <i class="bi bi-lightning-charge-fill me-2"></i>
+              <strong>Posible RAEE:</strong> Los aparatos eléctricos y electrónicos tienen una ruta de
+              gestión especial según la <strong>Ley 1672 de 2013</strong>. El simulador lo identificará automáticamente.
+            </div>
+
+          </div>
+          <div class="card-footer bg-light d-flex justify-content-between py-3 rounded-bottom">
+            <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(2)">
+              <i class="bi bi-arrow-left me-2"></i>Anterior
+            </button>
+            <button type="button" class="btn btn-institucional px-4" onclick="nextStep(2)">
+              Siguiente <i class="bi bi-arrow-right ms-2"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- ===== PASO 3: Condiciones especiales ===== -->
+        <div class="wizard-step card border-0 shadow-sm" id="step-3">
+          <div class="card-header bg-institucional text-white py-3 rounded-top">
+            <h5 class="mb-0 fw-semibold">
+              <i class="bi bi-3-circle me-2"></i>Condiciones especiales del residuo
+            </h5>
+          </div>
+          <div class="card-body p-4">
+
+            <p class="text-muted mb-4">
+              Indique si el residuo presenta alguna de las siguientes condiciones.
+              Cada respuesta afecta directamente la clasificación y la ruta normativa asignada.
+            </p>
+
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <div class="condition-card p-3 rounded-3 border h-100" id="card-electronico">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="proviene_electronico"
+                           name="proviene_electronico" role="switch">
+                    <label class="form-check-label fw-semibold" for="proviene_electronico">
+                      <i class="bi bi-lightning-charge text-warning me-1"></i>
+                      ¿Proviene de aparato eléctrico o electrónico?
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Computadores, celulares, televisores, electrodomésticos, equipos de laboratorio, etc.
+                    → Activa ruta <strong>RAEE</strong> (Ley 1672/2013).
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="condition-card p-3 rounded-3 border h-100" id="card-quimico">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="contacto_quimico"
+                           name="contacto_quimico" role="switch">
+                    <label class="form-check-label fw-semibold" for="contacto_quimico">
+                      <i class="bi bi-droplet-half text-danger me-1"></i>
+                      ¿Tuvo contacto con sustancias químicas o biológicas?
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    El contacto previo con sustancias peligrosas puede conferir características
+                    de peligrosidad al residuo (Decreto 4741/2005, Art. 6).
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="condition-card p-3 rounded-3 border h-100">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="mezclado"
+                           name="mezclado" role="switch">
+                    <label class="form-check-label fw-semibold" for="mezclado">
+                      <i class="bi bi-shuffle text-secondary me-1"></i>
+                      ¿Se encuentra mezclado con otros residuos?
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    La mezcla puede incrementar el volumen de RESPEL y dificultar el aprovechamiento.
+                    Se recomienda separación en la fuente.
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="condition-card p-3 rounded-3 border h-100" id="card-envase">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="envase_contaminado"
+                           name="envase_contaminado" role="switch">
+                    <label class="form-check-label fw-semibold" for="envase_contaminado">
+                      <i class="bi bi-box-seam text-danger me-1"></i>
+                      ¿Es un envase, empaque o embalaje contaminado con sustancia peligrosa?
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Según el Art. 10 del Decreto 4741/2005, los envases contaminados deben
+                    <strong>tratarse como RESPEL</strong>.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Alerta envase contaminado -->
+            <div class="alert alert-danger mt-4 d-none" id="aviso-envase">
+              <i class="bi bi-box-seam-fill me-2"></i>
+              <strong>Importante:</strong> Al marcar "envase contaminado", el sistema asignará
+              automáticamente ruta RESPEL sin necesidad de evaluar criterios adicionales.
+              (Artículo 10, num. 1, Decreto 4741/2005)
+            </div>
+
+          </div>
+          <div class="card-footer bg-light d-flex justify-content-between py-3 rounded-bottom">
+            <button type="button" class="btn btn-outline-secondary px-4" onclick="prevStep(3)">
+              <i class="bi bi-arrow-left me-2"></i>Anterior
+            </button>
+            <button type="submit" class="btn btn-success btn-lg px-5" id="btn-clasificar">
+              <i class="bi bi-diagram-3 me-2"></i>Clasificar residuo
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Aviso académico -->
+      <div class="alert alert-light border mt-4 small">
+        <i class="bi bi-info-circle text-muted me-2"></i>
+        Los datos ingresados se procesan localmente para la simulación. Esta herramienta es educativa
+        y no recopila información con fines comerciales ni oficiales.
+        <strong>Los resultados son orientativos.</strong>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// ===== Wizard de pasos =====
+const TITULOS = [
+  '',
+  'Paso 1 de 3 — Identificación del residuo',
+  'Paso 2 de 3 — Características físicas',
+  'Paso 3 de 3 — Condiciones especiales',
+];
+const PORCENTAJES = ['', '33%', '66%', '100%'];
+const WIDTHS = ['', '33', '66', '100'];
+
+let pasoActual = 1;
+
+function showStep(step) {
+  document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+  document.getElementById('step-' + step).classList.add('active');
+  document.getElementById('wizard-titulo').textContent = TITULOS[step];
+  document.getElementById('wizard-label').textContent = PORCENTAJES[step];
+  document.getElementById('wizard-progress').style.width = WIDTHS[step] + '%';
+  [1, 2, 3].forEach(i => {
+    const ind = document.getElementById('ind-' + i);
+    ind.classList.toggle('active', i <= step);
+    ind.classList.toggle('completed', i < step);
+  });
+  pasoActual = step;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStep(current) {
+  if (!validarPaso(current)) return;
+  if (current < 3) showStep(current + 1);
+}
+
+function prevStep(current) {
+  if (current > 1) showStep(current - 1);
+}
+
+function validarPaso(step) {
+  if (step === 1) {
+    const nombre = document.getElementById('nombre_residuo').value.trim();
+    if (!nombre) {
+      document.getElementById('nombre_residuo').classList.add('is-invalid');
+      document.getElementById('nombre_residuo').focus();
+      return false;
+    }
+    document.getElementById('nombre_residuo').classList.remove('is-invalid');
+  }
+  return true;
+}
+
+// ===== Alertas dinámicas según selección de material =====
+const materialesPeligrosos = ['quimico','aceites','baterias','medicamentos','biologico','radiactivo'];
+const materialesRaee = ['electronicos','componentes_electronicos'];
+
+document.getElementById('material_principal').addEventListener('change', function() {
+  const val = this.value;
+  document.getElementById('aviso-peligroso').classList.toggle('d-none', !materialesPeligrosos.includes(val));
+  document.getElementById('aviso-raee').classList.toggle('d-none', !materialesRaee.includes(val));
+  if (materialesRaee.includes(val)) {
+    document.getElementById('proviene_electronico').checked = true;
+    document.getElementById('card-electronico').classList.add('border-warning');
+  }
+});
+
+// ===== Sector hospitalario =====
+document.getElementById('sector_fuente').addEventListener('change', function() {
+  document.getElementById('aviso-hospitalario').classList.toggle('d-none', this.value !== 'hospitalario');
+});
+
+// ===== Envase contaminado =====
+document.getElementById('envase_contaminado').addEventListener('change', function() {
+  document.getElementById('aviso-envase').classList.toggle('d-none', !this.checked);
+  document.getElementById('card-envase').classList.toggle('border-danger', this.checked);
+});
+
+// ===== Submit con spinner =====
+document.getElementById('form-simulacion').addEventListener('submit', function() {
+  const btn = document.getElementById('btn-clasificar');
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Procesando...';
+  btn.disabled = true;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,384 @@
+/* ============================================================
+   SimuRESPEL Web — Hoja de estilos principal
+   Paleta: Institucional azul oscuro + acentos por tipo de residuo
+   ============================================================ */
+
+/* ---- Variables ---- */
+:root {
+  --color-institucional: #1a3a5c;
+  --color-institucional-dark: #0f2640;
+  --color-accent: #27c4a0;
+
+  --color-respel:       #c0392b;
+  --color-raee:         #d68910;
+  --color-organico:     #1e8449;
+  --color-aprovechable: #2471a3;
+  --color-no-aprovechable: #424242;
+  --color-ambiguo:      #7f8c8d;
+  --color-especial:     #8e44ad;
+
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --border-radius-card: 12px;
+  --shadow-card: 0 2px 12px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* ---- Reset / Base ---- */
+body {
+  font-family: var(--font-primary);
+  color: #2c3e50;
+  background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* ---- Colores institucionales ---- */
+.bg-institucional     { background-color: var(--color-institucional) !important; }
+.text-institucional   { color: var(--color-institucional) !important; }
+.border-institucional { border-color: var(--color-institucional) !important; }
+
+.btn-institucional {
+  background-color: var(--color-institucional);
+  border-color: var(--color-institucional);
+  color: white;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.btn-institucional:hover {
+  background-color: var(--color-institucional-dark);
+  border-color: var(--color-institucional-dark);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(26,58,92,0.3);
+}
+
+.btn-outline-institucional {
+  border-color: var(--color-institucional);
+  color: var(--color-institucional);
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.btn-outline-institucional:hover {
+  background-color: var(--color-institucional);
+  color: white;
+}
+
+/* ---- Accent (verde agua) ---- */
+.bg-accent   { background-color: var(--color-accent) !important; }
+.text-accent { color: var(--color-accent) !important; }
+.btn-accent {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+.btn-accent:hover {
+  background-color: #1ea888;
+  border-color: #1ea888;
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(39,196,160,0.4);
+}
+
+/* ---- Navbar ---- */
+.navbar-brand .text-accent { color: var(--color-accent) !important; }
+.navbar-dark .nav-link { font-weight: 500; font-size: 0.9rem; transition: color 0.2s; }
+.navbar-dark .nav-link:hover { color: var(--color-accent) !important; }
+.navbar-dark .nav-link.active {
+  color: var(--color-accent) !important;
+  font-weight: 600;
+}
+
+/* ---- Hero section ---- */
+.hero-section {
+  background: linear-gradient(135deg, var(--color-institucional) 0%, #0f2640 100%);
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+}
+
+/* ---- Cards de tipo de residuo (hero) ---- */
+.card-residuo {
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: default;
+}
+.card-residuo:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.card-respel {
+  background: rgba(192, 57, 43, 0.85);
+  color: white;
+  border: 2px solid #c0392b;
+}
+.card-raee {
+  background: rgba(214, 137, 16, 0.85);
+  color: white;
+  border: 2px solid #d68910;
+}
+.card-organico {
+  background: rgba(30, 132, 73, 0.85);
+  color: white;
+  border: 2px solid #1e8449;
+}
+.card-aprovechable {
+  background: rgba(36, 113, 163, 0.85);
+  color: white;
+  border: 2px solid #2471a3;
+}
+
+/* ---- Cards genéricas ---- */
+.card {
+  border-radius: var(--border-radius-card);
+}
+.card-hover {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg) !important;
+}
+
+/* ---- Step badge (pasos numerados) ---- */
+.step-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-institucional);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ---- Wizard de simulación ---- */
+.step-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  color: #adb5bd;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+.step-indicator .step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #dee2e6;
+  color: #6c757d;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+.step-indicator.active .step-dot {
+  background: var(--color-institucional);
+  color: white;
+  border-color: var(--color-institucional);
+}
+.step-indicator.active { color: var(--color-institucional); }
+.step-indicator.completed .step-dot {
+  background: #1e8449;
+  color: white;
+  border-color: #1e8449;
+}
+.step-indicator.completed { color: #1e8449; }
+
+/* ---- Condition cards (simulación) ---- */
+.condition-card {
+  transition: background 0.2s, border-color 0.2s;
+}
+.condition-card:has(input:checked) {
+  background: rgba(26,58,92,0.06);
+  border-color: var(--color-institucional) !important;
+}
+
+/* ---- Criterio cards (peligrosidad) ---- */
+.criterio-card {
+  transition: background 0.2s, border-color 0.2s;
+}
+.criterio-card:has(input:checked) {
+  background: rgba(192,57,43,0.08);
+  border-color: var(--color-respel) !important;
+}
+
+/* ---- Flujo de progreso (breadcrumb visual) ---- */
+.flujo-paso {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #adb5bd;
+  white-space: nowrap;
+}
+.flujo-paso.activo  { color: var(--color-institucional); font-weight: 700; }
+.flujo-paso.completado { color: #1e8449; }
+.flujo-linea {
+  flex: 1;
+  height: 2px;
+  background: #dee2e6;
+  min-width: 20px;
+}
+
+/* ---- Resultado principal ---- */
+.resultado-card {
+  border-radius: 16px;
+  border-left: 6px solid transparent !important;
+}
+.resultado-danger {
+  border-left-color: var(--color-respel) !important;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffffff 100%);
+}
+.resultado-warning {
+  border-left-color: var(--color-raee) !important;
+  background: linear-gradient(135deg, #fffbf0 0%, #ffffff 100%);
+}
+.resultado-success {
+  border-left-color: var(--color-organico) !important;
+  background: linear-gradient(135deg, #f0fff5 0%, #ffffff 100%);
+}
+.resultado-info {
+  border-left-color: var(--color-aprovechable) !important;
+  background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
+}
+.resultado-dark {
+  border-left-color: var(--color-no-aprovechable) !important;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+}
+.resultado-secondary {
+  border-left-color: var(--color-ambiguo) !important;
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
+}
+
+.resultado-icono {
+  font-size: 3rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.resultado-danger .resultado-icono  { color: var(--color-respel); }
+.resultado-warning .resultado-icono { color: var(--color-raee); }
+.resultado-success .resultado-icono { color: var(--color-organico); }
+.resultado-info .resultado-icono    { color: var(--color-aprovechable); }
+.resultado-dark .resultado-icono    { color: var(--color-no-aprovechable); }
+.resultado-secondary .resultado-icono { color: var(--color-ambiguo); }
+
+/* ---- Icono box ---- */
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+/* ---- Glosario ---- */
+.letra-separador {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-institucional);
+  border-bottom: 3px solid var(--color-accent);
+  display: inline-block;
+  padding-bottom: 2px;
+  margin-bottom: 12px;
+  line-height: 1;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* ---- Footer ---- */
+.footer-institucional {
+  background: #1a1a2e;
+}
+
+/* ---- Progress bar override ---- */
+.progress-bar.bg-institucional {
+  background-color: var(--color-institucional) !important;
+  transition: width 0.4s ease;
+}
+
+/* ---- Tablas ---- */
+.table > :not(caption) > * > * { padding: 0.6rem 0.75rem; }
+.w-40 { width: 40%; }
+
+/* ---- Botones generales ---- */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:active { transform: translateY(0); }
+
+/* ---- Form controls ---- */
+.form-control, .form-select {
+  border-radius: 8px;
+  border-color: #dee2e6;
+  font-size: 0.95rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--color-institucional);
+  box-shadow: 0 0 0 0.2rem rgba(26,58,92,0.15);
+}
+.form-control.is-invalid { border-color: var(--color-respel); }
+
+/* ---- Badges ---- */
+.badge { font-weight: 600; letter-spacing: 0.02em; }
+
+/* ---- Accordion ---- */
+.accordion-button:not(.collapsed) {
+  background-color: rgba(26,58,92,0.06);
+  color: var(--color-institucional);
+}
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.2rem rgba(26,58,92,0.15);
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .hero-section { min-height: auto; }
+  .flujo-paso small { display: none; }
+  .resultado-icono { font-size: 2rem; }
+  .display-5 { font-size: 1.8rem; }
+}
+
+@media (max-width: 576px) {
+  .step-indicator { font-size: 0.65rem; }
+  .step-indicator .step-dot { width: 26px; height: 26px; font-size: 0.75rem; }
+  .flujo-paso { font-size: 0.75rem; }
+  .flujo-linea { min-width: 10px; }
+}
+
+/* ---- Print ---- */
+@media print {
+  .navbar, footer, .no-print, .btn, .alert-dismissible { display: none !important; }
+  .main-content { padding: 0; }
+  .card { box-shadow: none; border: 1px solid #dee2e6 !important; }
+}

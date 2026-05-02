@@ -1,0 +1,249 @@
+{% extends "base.html" %}
+{% block title %}Obligaciones del Generador RESPEL — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="row">
+    <div class="col-lg-9 mx-auto">
+
+      <div class="mb-4">
+        <h1 class="h2 fw-bold text-institucional">
+          <i class="bi bi-list-check me-2 text-danger"></i>Obligaciones del Generador de RESPEL
+        </h1>
+        <p class="text-muted lead">
+          Resumen educativo de las principales obligaciones establecidas en el
+          <strong>Artículo 10 del Decreto 4741 de 2005</strong> y la
+          <strong>Resolución 1362 de 2007</strong>.
+        </p>
+        <div class="alert alert-warning small">
+          <i class="bi bi-mortarboard me-2"></i>
+          Esta información es <strong>orientativa y educativa</strong>. Las obligaciones específicas
+          dependen del tipo de residuo, la cantidad generada, la jurisdicción y la actividad
+          del generador. Consulte a la autoridad ambiental competente para su caso concreto.
+        </div>
+      </div>
+
+      <!-- Categorías de generador -->
+      <div class="card border-0 shadow-sm mb-5">
+        <div class="card-header bg-institucional text-white py-3">
+          <h5 class="mb-0 fw-semibold">
+            <i class="bi bi-person-badge me-2"></i>Categorías de generador RESPEL
+            <small class="fw-normal opacity-75">(Resolución 1362/2007)</small>
+          </h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="row g-3">
+            {% set cats = [
+              ('Grande Generador', '≥ 1.000 kg/mes', 'danger', 'Obligación de registro ante autoridad ambiental. Reportes anuales obligatorios. Plan de gestión integral exigible.'),
+              ('Mediano Generador', '100 – 999 kg/mes', 'warning', 'Obligación de registro ante autoridad ambiental. Reportes periódicos. Plan de gestión integral.'),
+              ('Pequeño Generador', '10 – 99 kg/mes', 'info', 'Verificar con la autoridad ambiental local la obligación de registro según la jurisdicción.'),
+              ('Generador de Mínima Cantidad', '< 10 kg/mes', 'secondary', 'Aunque en menor escala, debe cumplir buenas prácticas de manejo. Verificar exigencias locales.'),
+            ] %}
+            {% for nombre, cantidad, color, desc in cats %}
+            <div class="col-md-6">
+              <div class="card h-100 border-{{ color }} border-2 shadow-sm">
+                <div class="card-header bg-{{ color }} text-{{ 'dark' if color == 'warning' else 'white' }} py-2">
+                  <h6 class="mb-0 fw-bold">{{ nombre }}</h6>
+                </div>
+                <div class="card-body p-3">
+                  <div class="badge bg-{{ color }} text-{{ 'dark' if color == 'warning' else 'white' }} mb-2">{{ cantidad }}</div>
+                  <p class="text-muted small mb-0">{{ desc }}</p>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="alert alert-light border mt-3 small mb-0">
+            <i class="bi bi-info-circle me-1 text-institucional"></i>
+            La cantidad de referencia aplica a la <strong>suma total de RESPEL generados mensualmente</strong>,
+            no a cada residuo por separado. Las cantidades deben expresarse en kilogramos para la categorización.
+          </div>
+        </div>
+      </div>
+
+      <!-- Obligaciones por artículo -->
+      <h3 class="fw-bold text-institucional mb-4">
+        <i class="bi bi-journals me-2"></i>Obligaciones del Artículo 10 — Decreto 4741/2005
+      </h3>
+
+      {% set obligaciones_detalle = [
+        {
+          'num': '1',
+          'titulo': 'Identificación y caracterización',
+          'icono': 'bi-search',
+          'color': 'primary',
+          'norma': 'Art. 10 num. 1',
+          'desc': 'El generador debe identificar todos los residuos o desechos peligrosos que genera en su actividad productiva. La identificación incluye: nombre, características de peligrosidad, estado físico, composición y origen.',
+          'como': [
+            'Levante un inventario de todos los RESPEL generados en sus procesos.',
+            'Solicite fichas técnicas y hojas de seguridad (SDS) de los insumos que generan RESPEL.',
+            'Si tiene dudas sobre si un residuo es peligroso, realice ensayos de caracterización en laboratorio acreditado.',
+            'Consulte los Anexos I, II y III del Decreto 4741/2005 con las listas de residuos peligrosos.',
+          ]
+        },
+        {
+          'num': '2',
+          'titulo': 'Registro ante la autoridad ambiental',
+          'icono': 'bi-person-vcard',
+          'color': 'danger',
+          'norma': 'Res. 1362/2007',
+          'desc': 'Los generadores con obligación de registro (grandes y medianos generadores) deben inscribirse en el Registro de Generadores de Residuos o Desechos Peligrosos ante la autoridad ambiental con jurisdicción en el área de ubicación.',
+          'como': [
+            'Identifique cuál es su autoridad ambiental competente (ANLA para proyectos de interés nacional, CAR regional para los demás).',
+            'Realice la inscripción en el período establecido por la Resolución 1362/2007.',
+            'Actualice el registro anualmente con la información de generación del año anterior.',
+            'Conserve las constancias de inscripción y actualización del registro.',
+          ]
+        },
+        {
+          'num': '3',
+          'titulo': 'Almacenamiento seguro',
+          'icono': 'bi-archive',
+          'color': 'warning',
+          'norma': 'Art. 10 num. 3',
+          'desc': 'Los RESPEL deben almacenarse en condiciones que prevengan la contaminación del entorno y los riesgos para la salud. El almacenamiento es temporal hasta la entrega al gestor autorizado.',
+          'como': [
+            'Disponga de un área de almacenamiento exclusiva para RESPEL, diferenciada del resto de residuos.',
+            'Use recipientes apropiados al estado físico del residuo (bidones, canecas, sacos, etc.).',
+            'Asegure ventilación, señalización, contención de derrames y acceso restringido.',
+            'No mezcle residuos incompatibles entre sí (ácidos con bases, oxidantes con combustibles, etc.).',
+          ]
+        },
+        {
+          'num': '4',
+          'titulo': 'Etiquetado y rotulado',
+          'icono': 'bi-tag',
+          'color': 'info',
+          'norma': 'Art. 10 num. 4',
+          'desc': 'Todos los recipientes, contenedores o empaques de RESPEL deben estar correctamente etiquetados con la información necesaria para su identificación segura.',
+          'como': [
+            'Nombre técnico del residuo.',
+            'Características de peligrosidad (con pictogramas GHS cuando aplique).',
+            'Fecha de generación y fecha de inicio de almacenamiento.',
+            'Nombre y dirección del generador.',
+            'Cantidad contenida en el recipiente.',
+          ]
+        },
+        {
+          'num': '5',
+          'titulo': 'Plan de Gestión Integral de RESPEL',
+          'icono': 'bi-clipboard2-data',
+          'color': 'success',
+          'norma': 'Art. 10 num. 5',
+          'desc': 'El generador debe elaborar un Plan de Gestión de RESPEL que incluya la gestión integral desde la generación hasta la disposición final.',
+          'como': [
+            'Inventario completo y actualizado de RESPEL generados.',
+            'Estrategias de reducción en la fuente (sustitución de materiales, mejoras de proceso).',
+            'Estrategias de aprovechamiento y valorización cuando sea viable.',
+            'Procedimientos de manejo interno, almacenamiento y entrega al gestor.',
+            'Indicadores de seguimiento y mejora continua.',
+          ]
+        },
+        {
+          'num': '6',
+          'titulo': 'Plan de Contingencia',
+          'icono': 'bi-shield-exclamation',
+          'color': 'danger',
+          'norma': 'Art. 10 num. 6',
+          'desc': 'Se debe contar con un Plan de Contingencia para atender accidentes, derrames o situaciones de emergencia relacionadas con los RESPEL.',
+          'como': [
+            'Protocolo de actuación en caso de derrame, incendio o explosión.',
+            'Equipos de respuesta a emergencias (kit anti-derrames, extintores específicos, EPP).',
+            'Números de emergencia de autoridades ambientales, bomberos y salud.',
+            'Capacitación periódica del personal en respuesta a emergencias.',
+            'Simulacros de contingencia con RESPEL.',
+          ]
+        },
+        {
+          'num': '7',
+          'titulo': 'Entrega a gestor autorizado',
+          'icono': 'bi-truck',
+          'color': 'primary',
+          'norma': 'Art. 10 num. 7',
+          'desc': 'Los RESPEL solo pueden ser entregados a gestores externos autorizados por la autoridad ambiental competente para su transporte, tratamiento o disposición final.',
+          'como': [
+            'Verifique que el gestor cuente con licencia ambiental o autorización vigente.',
+            'Solicite copia de la autorización ambiental del gestor antes de cada entrega.',
+            'Exija el certificado de gestión adecuada al gestor una vez concluido el proceso.',
+            'Nunca entregue RESPEL a gestores informales o sin acreditación.',
+          ]
+        },
+        {
+          'num': '8',
+          'titulo': 'Conservación de certificados',
+          'icono': 'bi-folder-check',
+          'color': 'secondary',
+          'norma': 'Art. 10 num. 8',
+          'desc': 'El generador debe conservar los certificados de almacenamiento, aprovechamiento, tratamiento o disposición final expedidos por los gestores autorizados.',
+          'como': [
+            'Organice un archivo físico y/o digital de todos los certificados recibidos.',
+            'Vincule cada certificado con el manifiesto de transporte correspondiente.',
+            'Conserve los documentos por el tiempo que exija la autoridad ambiental.',
+            'Estos certificados son el principal soporte ante una visita de inspección ambiental.',
+          ]
+        },
+        {
+          'num': '9',
+          'titulo': 'Hojas de Seguridad (SDS/MSDS)',
+          'icono': 'bi-file-earmark-text',
+          'color': 'info',
+          'norma': 'Art. 10 num. 9 / GHS-ONU',
+          'desc': 'El generador debe mantener disponibles y actualizadas las hojas de datos de seguridad de todas las sustancias peligrosas que originan los RESPEL.',
+          'como': [
+            'Solicite las SDS a cada proveedor de sustancias o productos que generan RESPEL.',
+            'Asegúrese de que estén en español y actualizadas (formato GHS/SGA).',
+            'Ubíquelas en lugares accesibles al personal operativo.',
+            'Capacite al personal en la lectura y aplicación de las SDS.',
+          ]
+        },
+      ] %}
+
+      <div class="accordion accordion-flush shadow-sm rounded-3" id="acordObligaciones">
+        {% for obl in obligaciones_detalle %}
+        <div class="accordion-item border-bottom">
+          <h2 class="accordion-header">
+            <button class="accordion-button {% if not loop.first %}collapsed{% endif %} py-3" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#oblDet{{ loop.index }}">
+              <div class="d-flex align-items-center gap-3 w-100 me-3">
+                <span class="badge bg-{{ obl.color }} flex-shrink-0 p-2">
+                  <i class="bi {{ obl.icono }} fs-6"></i>
+                </span>
+                <div>
+                  <div class="fw-semibold">{{ obl.titulo }}</div>
+                  <small class="text-muted fw-normal">{{ obl.norma }}</small>
+                </div>
+              </div>
+            </button>
+          </h2>
+          <div id="oblDet{{ loop.index }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}">
+            <div class="accordion-body py-3 px-4">
+              <p class="mb-3">{{ obl.desc }}</p>
+              <h6 class="fw-semibold text-{{ obl.color }} mb-2">
+                <i class="bi bi-tools me-1"></i>¿Cómo cumplirlo?
+              </h6>
+              <ul class="mb-0">
+                {% for punto in obl.como %}
+                <li class="mb-1 small">{{ punto }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="mt-5 text-center">
+        <a href="{{ url_for('main.simulacion') }}" class="btn btn-institucional btn-lg px-5 me-2">
+          <i class="bi bi-play-circle me-2"></i>Realizar simulación
+        </a>
+        <a href="{{ url_for('main.normativa') }}" class="btn btn-outline-secondary px-4">
+          <i class="bi bi-journal-text me-2"></i>Ver normativa completa
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

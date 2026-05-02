@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+{% block title %}RAEE — Residuos de Aparatos Eléctricos y Electrónicos — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <!-- Hero RAEE -->
+  <div class="row align-items-center gy-4 mb-5">
+    <div class="col-lg-8">
+      <span class="badge bg-warning text-dark fw-semibold px-3 py-2 mb-3">
+        <i class="bi bi-lightning-charge me-1"></i>Módulo informativo
+      </span>
+      <h1 class="fw-bold text-institucional mb-3">
+        Residuos de Aparatos Eléctricos y Electrónicos
+        <span class="text-warning">(RAEE)</span>
+      </h1>
+      <p class="lead text-muted mb-4">
+        Los RAEE son uno de los flujos de residuos de mayor crecimiento en Colombia y el mundo.
+        Su manejo inadecuado libera sustancias tóxicas al ambiente. Colombia cuenta con un marco
+        normativo específico para su gestión.
+      </p>
+      <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent">
+        <i class="bi bi-play-circle me-2"></i>Evaluar un RAEE en el simulador
+      </a>
+    </div>
+    <div class="col-lg-4">
+      <div class="card border-warning border-2 shadow-sm text-center p-4">
+        <i class="bi bi-lightning-charge-fill display-1 text-warning mb-3"></i>
+        <h5 class="fw-bold">¿Por qué importa?</h5>
+        <p class="text-muted small mb-0">
+          Un solo celular puede contaminar hasta 600.000 litros de agua si se dispone
+          incorrectamente en un relleno sanitario.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ¿Qué es RAEE? -->
+  <div class="card border-0 shadow-sm mb-5">
+    <div class="card-header bg-warning bg-opacity-20 py-3">
+      <h4 class="fw-bold mb-0 text-warning-emphasis">
+        <i class="bi bi-question-circle me-2"></i>¿Qué son los RAEE?
+      </h4>
+    </div>
+    <div class="card-body p-4">
+      <p>
+        Los <strong>Residuos de Aparatos Eléctricos y Electrónicos (RAEE)</strong> son todos aquellos
+        aparatos que funcionan con electricidad o campos electromagnéticos, y sus componentes, una vez
+        que el usuario los desecha. Incluyen una amplia gama de dispositivos, desde grandes electrodomésticos
+        hasta pequeños gadgets.
+      </p>
+      <div class="row g-3 mt-2">
+        {% set categorias = [
+          ('bi-tv', 'Pantallas y monitores', 'Televisores, monitores de computador, laptops.'),
+          ('bi-phone', 'Equipos de comunicación', 'Celulares, teléfonos, radios, equipos de red.'),
+          ('bi-cpu', 'Informática', 'Computadores de escritorio, tablets, impresoras, escáneres.'),
+          ('bi-house-gear', 'Electrodomésticos', 'Neveras, lavadoras, microondas, aires acondicionados.'),
+          ('bi-lightbulb', 'Iluminación', 'Bombillas de bajo consumo, lámparas fluorescentes.'),
+          ('bi-wrench-adjustable', 'Herramientas eléctricas', 'Taladros, sierras, equipos de soldadura.'),
+          ('bi-heart-pulse', 'Equipos médicos', 'Radioterapia, diagnóstico, equipos de laboratorio.'),
+          ('bi-battery-half', 'Pilas y baterías', 'Pilas AA, AAA, baterías de litio, de plomo-ácido.'),
+        ] %}
+        {% for icono, titulo, desc in categorias %}
+        <div class="col-sm-6 col-lg-3">
+          <div class="d-flex align-items-start gap-2">
+            <i class="bi {{ icono }} text-warning fs-5 flex-shrink-0 mt-1"></i>
+            <div>
+              <div class="fw-semibold small">{{ titulo }}</div>
+              <div class="text-muted small">{{ desc }}</div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Marco normativo -->
+  <div class="card border-0 shadow-sm mb-5">
+    <div class="card-header bg-institucional text-white py-3">
+      <h4 class="fw-bold mb-0">
+        <i class="bi bi-journal-text me-2"></i>Marco normativo en Colombia
+      </h4>
+    </div>
+    <div class="card-body p-4">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="p-3 border-start border-warning border-3 bg-warning bg-opacity-10 rounded-end h-100">
+            <h6 class="fw-bold text-warning-emphasis">Ley 1672 de 2013</h6>
+            <p class="small text-muted mb-2">
+              Establece los lineamientos para la adopción de una política pública de gestión integral
+              de los RAEE en Colombia. Sus principios rectores son:
+            </p>
+            <ul class="small text-muted mb-0">
+              <li><strong>Responsabilidad extendida del productor (REP):</strong> los fabricantes e importadores
+              son responsables del ciclo de vida completo de sus productos.</li>
+              <li><strong>Principio de precaución:</strong> ante incertidumbre, se adoptan las medidas
+              más protectoras para el ambiente.</li>
+              <li><strong>Separación en la fuente:</strong> el generador es responsable de no mezclar
+              RAEE con residuos ordinarios.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="p-3 border-start border-warning border-3 bg-warning bg-opacity-10 rounded-end h-100">
+            <h6 class="fw-bold text-warning-emphasis">Resolución 851 de 2022</h6>
+            <p class="small text-muted mb-2">
+              Actualiza y regula los sistemas de recolección selectiva y gestión ambiental de RAEE en
+              Colombia. Establece:
+            </p>
+            <ul class="small text-muted mb-0">
+              <li>Los sistemas de recolección que deben implementar los productores.</li>
+              <li>Las metas de recolección progresivas que deben cumplir.</li>
+              <li>Los requisitos de reporte e información a la autoridad ambiental.</li>
+              <li>Las categorías de AEE (aparatos eléctricos y electrónicos) sujetas a la norma.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ruta de gestión -->
+  <div class="mb-5">
+    <h3 class="fw-bold text-institucional mb-4">
+      <i class="bi bi-signpost-split me-2 text-warning"></i>Ruta de gestión correcta para RAEE
+    </h3>
+    <div class="row g-3">
+      {% set pasos = [
+        ('1', 'bi-x-circle-fill', 'danger', 'NO mezclar con ordinarios', 'Nunca deposite un RAEE en el contenedor negro de basura doméstica. Los rellenos sanitarios no están diseñados para este tipo de residuo.'),
+        ('2', 'bi-box-arrow-in-down', 'warning', 'Almacenar temporalmente', 'Guarde el RAEE en un lugar seguro, seco y diferenciado hasta poder entregarlo a un punto de recolección autorizado.'),
+        ('3', 'bi-search', 'info', 'Buscar punto de recolección', 'Identifique el punto RAEE más cercano: tiendas de electrónica, grandes superficies, campañas municipales o directamente con el fabricante.'),
+        ('4', 'bi-recycle', 'success', 'Entregar al gestor', 'Entregue el RAEE en el punto autorizado. El gestor se encarga del desmantelamiento, recuperación de materiales y disposición de sustancias peligrosas.'),
+      ] %}
+      {% for num, icono, color, titulo, desc in pasos %}
+      <div class="col-sm-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm text-center p-4">
+          <div class="step-badge mx-auto mb-3">{{ num }}</div>
+          <i class="bi {{ icono }} display-5 text-{{ color }} mb-3"></i>
+          <h6 class="fw-bold">{{ titulo }}</h6>
+          <p class="text-muted small mb-0">{{ desc }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Sustancias peligrosas en RAEE -->
+  <div class="card border-0 shadow-sm mb-5">
+    <div class="card-header bg-danger bg-opacity-10 py-3">
+      <h4 class="fw-bold mb-0 text-danger">
+        <i class="bi bi-radioactive me-2"></i>¿Por qué son peligrosos algunos RAEE?
+      </h4>
+    </div>
+    <div class="card-body p-4">
+      <p class="text-muted">
+        Muchos aparatos electrónicos contienen sustancias con características de peligrosidad.
+        Una mala disposición puede liberar estas sustancias al suelo, el agua y el aire:
+      </p>
+      <div class="row g-3">
+        {% set sustancias = [
+          ('Plomo (Pb)', 'Baterías de plomo-ácido, soldaduras de placas electrónicas.', 'Daño neurológico, especialmente en niños.'),
+          ('Mercurio (Hg)', 'Lámparas fluorescentes, interruptores.', 'Daño renal y del sistema nervioso central.'),
+          ('Cadmio (Cd)', 'Baterías recargables Ni-Cd.', 'Daño renal, carcinogénico.'),
+          ('Cromo hexavalente (Cr VI)', 'Carcasas metálicas, componentes anticorrosión.', 'Carcinogénico por inhalación.'),
+          ('Bifenilos policlorados (PCB)', 'Condensadores, transformadores antiguos.', 'Alteradores endocrinos, carcinogénicos.'),
+          ('Retardantes de llama bromados (BFR)', 'Carcasas plásticas, placas de circuito.', 'Alteradores endocrinos, tóxicos en la combustión.'),
+        ] %}
+        {% for sustancia, fuente, impacto in sustancias %}
+        <div class="col-md-6">
+          <div class="p-2 border-start border-danger border-2 bg-danger bg-opacity-10 rounded-end">
+            <div class="fw-semibold small text-danger">{{ sustancia }}</div>
+            <div class="text-muted small"><strong>Presente en:</strong> {{ fuente }}</div>
+            <div class="text-muted small"><strong>Impacto en salud:</strong> {{ impacto }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="card border-0 bg-institucional text-white shadow">
+    <div class="card-body p-4 text-center">
+      <h5 class="fw-bold mb-3">¿Tienes un RAEE para evaluar?</h5>
+      <p class="mb-4 opacity-75">
+        Usa el simulador para determinar si tu aparato eléctrico o electrónico también
+        presenta criterios de peligrosidad (RESPEL) y conoce las obligaciones aplicables.
+      </p>
+      <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-5">
+        <i class="bi bi-play-circle me-2"></i>Iniciar simulación RAEE
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
