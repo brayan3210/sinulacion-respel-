@@ -15,12 +15,6 @@ venv/
 env/
 ENV/
 
-# Flask / SQLite
-instance/
-*.db
-*.sqlite
-*.sqlite3
-
 # Environment / secrets
 .env
 .env.*
