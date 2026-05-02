@@ -7,15 +7,11 @@
   @page {
     size: A4;
     margin: 2cm 2cm 2.5cm 2cm;
-    @frame footer_frame {
-      -pdf-frame-content: footer_content;
-      left: 50pt; width: 512pt; top: 800pt; height: 20pt;
+    @bottom-center {
+      content: "SimuRESPEL Web — Reporte orientativo — Página " counter(page) " de " counter(pages);
+      font-size: 9px;
+      color: #7f8c8d;
     }
-  }
-  #footer_content {
-    text-align: center;
-    font-size: 9px;
-    color: #7f8c8d;
   }
 
   body {
@@ -177,11 +173,6 @@
 </style>
 </head>
 <body>
-
-<!-- FOOTER (xhtml2pdf) -->
-<div id="footer_content">
-  SimuRESPEL Web — Reporte orientativo — Página <pdf:pagenumber/> de <pdf:pagecount/>
-</div>
 
 <!-- ENCABEZADO -->
 <div class="hdr">
