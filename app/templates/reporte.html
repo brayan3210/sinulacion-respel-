@@ -45,7 +45,7 @@
     <a href="{{ url_for('main.resultado') }}" class="btn btn-sm btn-outline-secondary">
       <i class="bi bi-arrow-left me-1"></i>Volver al resultado
     </a>
-    <button onclick="descargarPDF()" class="btn btn-sm btn-primary">
+    <button onclick="window.print()" class="btn btn-sm btn-primary">
       <i class="bi bi-printer me-1"></i>Imprimir / Guardar PDF
     </button>
   </div>
@@ -257,7 +257,7 @@
     <a href="{{ url_for('main.nueva_simulacion') }}" class="btn btn-sm btn-outline-primary me-2">
       <i class="bi bi-arrow-counterclockwise me-1"></i>Nueva simulación
     </a>
-    <button onclick="descargarPDF()" class="btn btn-sm btn-primary">
+    <button onclick="window.print()" class="btn btn-sm btn-primary">
       <i class="bi bi-printer me-1"></i>Imprimir / PDF
     </button>
   </div>
@@ -265,45 +265,5 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-async function descargarPDF() {
-  if (document.fonts && document.fonts.ready) {
-    try { await document.fonts.ready; } catch (e) {}
-  }
-
-  const fecha = new Date();
-  const pad = n => String(n).padStart(2, '0');
-  const ts = fecha.getFullYear()
-           + pad(fecha.getMonth() + 1)
-           + pad(fecha.getDate())
-           + '-' + pad(fecha.getHours()) + pad(fecha.getMinutes());
-
-  const opt = {
-    margin: [12, 12, 12, 12],
-    filename: 'SimuRESPEL-' + ts + '.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: {
-      scale: 2,
-      useCORS: true,
-      logging: false,
-      windowWidth: 794,
-      onclone: function(clonedDoc) {
-        const style = clonedDoc.createElement('style');
-        style.textContent = ''
-          + '.no-print { display: none !important; }'
-          + 'body { font-size: 11px !important; }'
-          + '.container { max-width: 100% !important; }'
-          + 'a { color: inherit !important; text-decoration: none !important; }';
-        clonedDoc.head.appendChild(style);
-      }
-    },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['css', 'legacy'] }
-  };
-
-  html2pdf().set(opt).from(document.querySelector('.container')).save();
-}
-</script>
 </body>
 </html>
