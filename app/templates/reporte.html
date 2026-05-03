@@ -267,33 +267,42 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-function descargarPDF() {
-  const elemento = document.querySelector('.container');
-  const noPrint = elemento.querySelectorAll('.no-print');
-  noPrint.forEach(el => el.style.display = 'none');
+async function descargarPDF() {
+  if (document.fonts && document.fonts.ready) {
+    try { await document.fonts.ready; } catch (e) {}
+  }
 
   const fecha = new Date();
-  const ts = fecha.getFullYear().toString()
-           + String(fecha.getMonth() + 1).padStart(2, '0')
-           + String(fecha.getDate()).padStart(2, '0')
-           + '-'
-           + String(fecha.getHours()).padStart(2, '0')
-           + String(fecha.getMinutes()).padStart(2, '0');
+  const pad = n => String(n).padStart(2, '0');
+  const ts = fecha.getFullYear()
+           + pad(fecha.getMonth() + 1)
+           + pad(fecha.getDate())
+           + '-' + pad(fecha.getHours()) + pad(fecha.getMinutes());
 
   const opt = {
-    margin: [10, 10, 10, 10],
+    margin: [12, 12, 12, 12],
     filename: 'SimuRESPEL-' + ts + '.pdf',
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
+    html2canvas: {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      windowWidth: 794,
+      onclone: function(clonedDoc) {
+        const style = clonedDoc.createElement('style');
+        style.textContent = ''
+          + '.no-print { display: none !important; }'
+          + 'body { font-size: 11px !important; }'
+          + '.container { max-width: 100% !important; }'
+          + 'a { color: inherit !important; text-decoration: none !important; }';
+        clonedDoc.head.appendChild(style);
+      }
+    },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
   };
 
-  html2pdf().set(opt).from(elemento).save().then(() => {
-    noPrint.forEach(el => el.style.display = '');
-  }).catch(() => {
-    noPrint.forEach(el => el.style.display = '');
-  });
+  html2pdf().set(opt).from(document.querySelector('.container')).save();
 }
 </script>
 </body>
