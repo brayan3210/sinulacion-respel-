@@ -14,6 +14,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <style>
+    .navbar.sticky-top { transition: box-shadow .25s ease, background-color .25s ease; }
+    .navbar-scrolled  { box-shadow: 0 8px 24px -12px rgba(0,0,0,.4); }
+  </style>
   {% block extra_css %}{% endblock %}
 </head>
 <body>
