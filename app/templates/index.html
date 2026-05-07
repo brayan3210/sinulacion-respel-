@@ -5,6 +5,12 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero-section py-5">
+  <!-- Orbes decorativos animados -->
+  <div class="hero-orbs" aria-hidden="true">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
   <div class="container py-4">
     <div class="row align-items-center gy-5">
 
@@ -70,6 +76,42 @@
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS / IMPACTO EDUCATIVO ===== -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+      <div class="col-6 col-md-3">
+        <div class="stat-card card-hover">
+          <i class="bi bi-journal-bookmark fs-3 text-accent mb-2"></i>
+          <div><span class="counter" data-counter-target="6">0</span></div>
+          <span class="stat-label">Normas integradas</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card card-hover">
+          <i class="bi bi-collection fs-3 text-accent mb-2"></i>
+          <div><span class="counter" data-counter-target="15">0</span></div>
+          <span class="stat-label">Tipos de residuo</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card card-hover">
+          <i class="bi bi-shield-exclamation fs-3 text-accent mb-2"></i>
+          <div><span class="counter" data-counter-target="7">0</span></div>
+          <span class="stat-label">Criterios CRETIP+R</span>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card card-hover">
+          <i class="bi bi-geo-alt fs-3 text-accent mb-2"></i>
+          <div><span class="counter" data-counter-target="100">0</span><span class="counter">%</span></div>
+          <span class="stat-label">Cobertura nacional</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -178,13 +220,23 @@
 </section>
 
 <!-- ===== CTA FINAL ===== -->
-<section class="py-5 bg-institucional">
-  <div class="container text-center">
-    <h2 class="fw-bold text-white mb-3">Comienza tu simulación ahora</h2>
-    <p class="text-light mb-4">En minutos sabrás cómo clasificar y manejar tu residuo según la normativa colombiana.</p>
-    <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-5 shadow">
-      <i class="bi bi-play-circle-fill me-2"></i>Iniciar simulación gratuita
-    </a>
+<section class="py-5">
+  <div class="container">
+    <div class="cta-panel text-center">
+      <h2 class="fw-bold mb-3 display-6">Comienza tu simulación ahora</h2>
+      <p class="lead mb-4 mx-auto" style="max-width: 60ch;">
+        En minutos sabrás cómo clasificar y manejar tu residuo según la normativa colombiana.
+        Una experiencia guiada, gratuita y orientada a la educación ambiental.
+      </p>
+      <div class="d-flex flex-wrap gap-3 justify-content-center">
+        <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-5">
+          <i class="bi bi-play-circle-fill me-2"></i>Iniciar simulación gratuita
+        </a>
+        <a href="{{ url_for('main.glosario') }}" class="btn btn-outline-light btn-lg px-4">
+          <i class="bi bi-book me-2"></i>Explorar glosario
+        </a>
+      </div>
+    </div>
   </div>
 </section>
 

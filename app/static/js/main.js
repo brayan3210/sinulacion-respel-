@@ -74,6 +74,50 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  // ---- Animated counters ----
+  const counters = document.querySelectorAll('.counter[data-counter-target]');
+  if (counters.length && 'IntersectionObserver' in window) {
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    const animateCounter = (el) => {
+      const target = parseInt(el.dataset.counterTarget, 10);
+      if (isNaN(target)) return;
+      const duration = 1400;
+      const start = performance.now();
+      const tick = (now) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const value = Math.round(target * easeOutCubic(progress));
+        el.textContent = value.toString();
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const counterIO = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          counterIO.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(c => counterIO.observe(c));
+  }
+
+  // ---- Ripple effect on .btn click ----
+  document.addEventListener('click', function (e) {
+    const btn = e.target.closest('.btn');
+    if (!btn || btn.disabled) return;
+    const rect = btn.getBoundingClientRect();
+    const ripple = document.createElement('span');
+    const size = Math.max(rect.width, rect.height);
+    ripple.className = 'ripple';
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top  = (e.clientY - rect.top  - size / 2) + 'px';
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+
   // ---- Spinner en submits ----
   document.querySelectorAll('form').forEach(function (form) {
     form.addEventListener('submit', function () {

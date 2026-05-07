@@ -2,28 +2,58 @@
 {% block title %}{% if error_500 %}Error del servidor{% else %}Página no encontrada{% endif %} — SimuRESPEL Web{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6 text-center py-5">
-      {% if error_500 %}
-        <i class="bi bi-exclamation-octagon display-1 text-danger mb-3"></i>
-        <h1 class="fw-bold text-danger">Error interno</h1>
-        <p class="lead text-muted mb-4">El servidor encontró un problema inesperado. Por favor intente nuevamente.</p>
-      {% else %}
-        <i class="bi bi-search display-1 text-muted mb-3"></i>
-        <h1 class="fw-bold text-institucional">404</h1>
-        <h3 class="fw-semibold mb-3">Página no encontrada</h3>
-        <p class="lead text-muted mb-4">La página que busca no existe o fue movida.</p>
-      {% endif %}
-      <div class="d-flex flex-wrap gap-2 justify-content-center">
-        <a href="{{ url_for('main.index') }}" class="btn btn-institucional px-4">
-          <i class="bi bi-house me-2"></i>Ir al inicio
-        </a>
-        <a href="{{ url_for('main.simulacion') }}" class="btn btn-outline-secondary px-4">
-          <i class="bi bi-play-circle me-2"></i>Iniciar simulación
-        </a>
+<section class="py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 text-center py-5">
+
+        {% if error_500 %}
+          <div class="error-code" style="background: linear-gradient(135deg, #c0392b 0%, #d68910 50%, #c0392b 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">500</div>
+          <h2 class="fw-bold mt-3 mb-2">Error interno del servidor</h2>
+          <p class="lead text-muted mb-4 mx-auto" style="max-width: 52ch;">
+            Algo no salió como esperábamos. Nuestro equipo registra automáticamente este tipo de incidentes.
+            Por favor intente nuevamente en unos momentos.
+          </p>
+        {% else %}
+          <div class="error-code">404</div>
+          <h2 class="fw-bold mt-3 mb-2">Página no encontrada</h2>
+          <p class="lead text-muted mb-4 mx-auto" style="max-width: 52ch;">
+            La ruta que buscas no existe o fue movida. Vuelve al inicio o salta directamente a las herramientas
+            principales del simulador.
+          </p>
+        {% endif %}
+
+        <!-- Acciones principales -->
+        <div class="d-flex flex-wrap gap-2 justify-content-center mb-5">
+          <a href="{{ url_for('main.index') }}" class="btn btn-institucional btn-lg px-4">
+            <i class="bi bi-house-door-fill me-2"></i>Ir al inicio
+          </a>
+          <a href="{{ url_for('main.simulacion') }}" class="btn btn-accent btn-lg px-4">
+            <i class="bi bi-play-circle-fill me-2"></i>Iniciar simulación
+          </a>
+        </div>
+
+        <!-- Sugerencias -->
+        <div class="row g-3 justify-content-center mt-3">
+          {% set rutas = [
+            ('main.normativa', 'bi-journal-text', 'Normativa', 'Marco legal completo'),
+            ('main.glosario', 'bi-book', 'Glosario', 'Términos de gestión ambiental'),
+            ('main.raee_info', 'bi-lightning-charge', 'RAEE', 'Aparatos eléctricos'),
+            ('main.historial', 'bi-clock-history', 'Historial', 'Simulaciones anteriores'),
+          ] %}
+          {% for endpoint, icono, titulo, desc in rutas %}
+          <div class="col-6 col-md-3">
+            <a href="{{ url_for(endpoint) }}" class="card card-hover text-decoration-none p-3 h-100 border-0 shadow-sm">
+              <i class="bi {{ icono }} fs-3 text-institucional mb-2"></i>
+              <div class="fw-semibold text-institucional">{{ titulo }}</div>
+              <small class="text-muted">{{ desc }}</small>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+
       </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}
