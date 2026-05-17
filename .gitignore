@@ -1,40 +1,32 @@
-# Variables de entorno y claves API (NO subir nunca)
-.env
-*.env
-.env.*
-
-# Base de datos SQLite
-instance/
-*.db
-*.sqlite3
-
 # Python
 __pycache__/
 *.py[cod]
-*.pyo
-*.pyd
+*$py.class
+*.so
 .Python
-*.pyc
+*.egg-info/
+.eggs/
+build/
+dist/
 
-# Entornos virtuales
+# Virtual environments
+.venv/
 venv/
 env/
-.venv/
 ENV/
 
-# Flask / sesiones
-flask_session/
+# Environment / secrets
+.env
+.env.*
+!.env.example
 
-# IDE
+# IDE / editor
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# macOS
+# OS
 .DS_Store
-.AppleDouble
-
-# Logs
-*.log
-/tmp/
+Thumbs.db
+desktop.ini
