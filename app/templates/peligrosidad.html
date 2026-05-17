@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+{% block title %}Evaluación de Peligrosidad — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+
+      <!-- Breadcrumb -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small">
+          <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Inicio</a></li>
+          <li class="breadcrumb-item"><a href="{{ url_for('main.simulacion') }}">Simulación</a></li>
+          <li class="breadcrumb-item active">Evaluación de peligrosidad</li>
+        </ol>
+      </nav>
+
+      <!-- Progreso del flujo -->
+      <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body py-3">
+          <div class="d-flex align-items-center gap-3">
+            <div class="flujo-paso completado"><i class="bi bi-check-circle-fill"></i> Datos ingresados</div>
+            <div class="flujo-linea"></div>
+            <div class="flujo-paso activo"><i class="bi bi-shield-exclamation"></i> Peligrosidad</div>
+            <div class="flujo-linea"></div>
+            <div class="flujo-paso pendiente"><i class="bi bi-clipboard2-check"></i> Resultado</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Encabezado -->
+      <div class="alert alert-danger border-danger mb-4" role="alert">
+        <div class="d-flex align-items-start gap-3">
+          <i class="bi bi-exclamation-octagon-fill fs-3 text-danger flex-shrink-0 mt-1"></i>
+          <div>
+            <h5 class="fw-bold mb-1">Evaluación de criterios de peligrosidad</h5>
+            <p class="mb-1">
+              Basada en el <strong>Artículo 6 del Decreto 4741 de 2005</strong>. Marque los criterios
+              que apliquen al residuo "<strong>{{ datos.get('nombre_residuo', '') }}</strong>".
+            </p>
+            <p class="small mb-0 text-muted">
+              Si presenta <strong>al menos uno</strong> de estos criterios, el residuo debe clasificarse
+              como <strong>RESPEL</strong> y cumplir las obligaciones del Artículo 10 del mismo decreto.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resumen del residuo ingresado -->
+      <div class="card border-0 shadow-sm bg-light mb-4">
+        <div class="card-body p-3">
+          <h6 class="fw-bold text-institucional mb-2">
+            <i class="bi bi-info-circle me-2"></i>Residuo a evaluar
+          </h6>
+          <div class="row g-2 small">
+            <div class="col-sm-4"><span class="text-muted">Nombre:</span> <strong>{{ datos.get('nombre_residuo','—') }}</strong></div>
+            <div class="col-sm-4"><span class="text-muted">Material:</span> <strong>{{ datos.get('material_principal','—') }}</strong></div>
+            <div class="col-sm-4"><span class="text-muted">Sector:</span> <strong>{{ datos.get('sector_fuente','—') }}</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario de criterios -->
+      <form method="POST" action="{{ url_for('main.peligrosidad') }}" id="form-peligrosidad">
+
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-header bg-danger text-white py-3">
+            <h5 class="mb-0 fw-semibold">
+              <i class="bi bi-radioactive me-2"></i>Criterios CRETIP+R (Decreto 4741/2005, Art. 6)
+            </h5>
+          </div>
+          <div class="card-body p-4">
+
+            <p class="text-muted mb-4">
+              Seleccione <strong>todos los criterios</strong> que correspondan a este residuo.
+              Cada criterio tiene una descripción orientativa para facilitar su identificación.
+            </p>
+
+            <div class="row g-3">
+
+              <!-- Corrosivo -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-corrosivo">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_corrosivo" name="criterio_corrosivo" role="switch">
+                    <label class="form-check-label" for="criterio_corrosivo">
+                      <span class="badge bg-danger me-1">C</span>
+                      <strong>Corrosivo</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Destruye tejido vivo o corrode metales. Ácidos o bases con pH ≤ 2 o ≥ 12.5.
+                    <em>Ejemplos: ácido sulfúrico, soda cáustica, solventes ácidos.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Reactivo -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-reactivo">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_reactivo" name="criterio_reactivo" role="switch">
+                    <label class="form-check-label" for="criterio_reactivo">
+                      <span class="badge bg-danger me-1">R</span>
+                      <strong>Reactivo</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Inestable; reacciona violentamente con agua o aire, genera gases tóxicos.
+                    <em>Ejemplos: sodio metálico, peróxidos, cianuro en condiciones ácidas.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Explosivo -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-explosivo">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_explosivo" name="criterio_explosivo" role="switch">
+                    <label class="form-check-label" for="criterio_explosivo">
+                      <span class="badge bg-danger me-1">E</span>
+                      <strong>Explosivo</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Puede explotar bajo condiciones normales de almacenamiento o transporte.
+                    <em>Ejemplos: nitroglicerina, TNT, azida de plomo.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Tóxico -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-toxico">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_toxico" name="criterio_toxico" role="switch">
+                    <label class="form-check-label" for="criterio_toxico">
+                      <span class="badge bg-danger me-1">T</span>
+                      <strong>Tóxico</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Causa daño a la salud humana o al ambiente por ingestión, inhalación o contacto.
+                    <em>Ejemplos: plaguicidas, metales pesados (plomo, mercurio, cadmio), cianuro.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Inflamable -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-inflamable">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_inflamable" name="criterio_inflamable" role="switch">
+                    <label class="form-check-label" for="criterio_inflamable">
+                      <span class="badge bg-warning text-dark me-1">I</span>
+                      <strong>Inflamable</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Punto de inflamación &lt; 60°C (líquidos) o ignición espontánea (sólidos).
+                    <em>Ejemplos: gasolina, acetona, alcohol etílico, aceites usados.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Infeccioso / Patogénico -->
+              <div class="col-md-6">
+                <div class="criterio-card p-3 rounded-3 border" id="card-infeccioso">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_infeccioso" name="criterio_infeccioso" role="switch">
+                    <label class="form-check-label" for="criterio_infeccioso">
+                      <span class="badge bg-success me-1">P</span>
+                      <strong>Infeccioso / Patogénico</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-0">
+                    Contiene microorganismos patógenos en concentraciones que representan riesgo.
+                    <em>Ejemplos: sangre contaminada, cultivos microbiológicos, material anatomopatológico.</em>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Radiactivo -->
+              <div class="col-md-12">
+                <div class="criterio-card p-3 rounded-3 border border-danger" id="card-radiactivo">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input criterio-check" type="checkbox"
+                           id="criterio_radiactivo" name="criterio_radiactivo" role="switch">
+                    <label class="form-check-label" for="criterio_radiactivo">
+                      <span class="badge bg-danger me-1">R</span>
+                      <strong>Radiactivo</strong>
+                    </label>
+                  </div>
+                  <p class="text-muted small mb-2">
+                    Contiene sustancias que emiten radiación ionizante. Requiere manejo especializado
+                    adicional regulado por la <strong>ANLA y el IAEA</strong>.
+                    <em>Ejemplos: residuos de equipos de radioterapia, fuentes selladas en desuso.</em>
+                  </p>
+                  <div class="alert alert-warning py-2 mb-0 small">
+                    <i class="bi bi-exclamation-triangle me-1"></i>
+                    Si el residuo es radiactivo, contacte inmediatamente a la
+                    <strong>Autoridad Nacional de Licencias Ambientales (ANLA)</strong> y al
+                    <strong>Instituto Nacional de Salud (INS)</strong> para orientación especializada.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Contador de criterios -->
+            <div class="mt-4 p-3 rounded-3 bg-light border">
+              <div class="d-flex align-items-center gap-3">
+                <div class="text-center">
+                  <div class="display-6 fw-bold text-danger" id="contador-criterios">0</div>
+                  <small class="text-muted">criterios marcados</small>
+                </div>
+                <div>
+                  <p class="mb-1 fw-semibold" id="estado-clasificacion">
+                    <span class="text-muted">Sin criterios seleccionados</span>
+                  </p>
+                  <p class="small text-muted mb-0" id="desc-clasificacion">
+                    Marque los criterios que corresponden al residuo para continuar.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="card-footer bg-light d-flex justify-content-between align-items-center py-3 rounded-bottom">
+            <a href="{{ url_for('main.simulacion') }}" class="btn btn-outline-secondary px-4">
+              <i class="bi bi-arrow-left me-2"></i>Volver al formulario
+            </a>
+            <button type="submit" class="btn btn-danger btn-lg px-5" id="btn-evaluar">
+              <i class="bi bi-clipboard2-check me-2"></i>Obtener resultado
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Nota normativa -->
+      <div class="card border-0 shadow-sm bg-light">
+        <div class="card-body p-3 small text-muted">
+          <i class="bi bi-book me-2 text-institucional"></i>
+          <strong>Base normativa:</strong> Los criterios de peligrosidad presentados se derivan del
+          <strong>Artículo 6 del Decreto 4741 de 2005</strong>. La determinación de peligrosidad
+          puede también basarse en listas de residuos peligrosos (Anexos I y II del decreto) o en
+          ensayos de toxicidad por parte de laboratorios acreditados. Esta evaluación es de carácter
+          <strong>orientativo y educativo</strong>.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const checks = document.querySelectorAll('.criterio-check');
+const contador = document.getElementById('contador-criterios');
+const estadoClas = document.getElementById('estado-clasificacion');
+const descClas = document.getElementById('desc-clasificacion');
+
+function actualizarContador() {
+  const activos = document.querySelectorAll('.criterio-check:checked').length;
+  contador.textContent = activos;
+
+  if (activos === 0) {
+    contador.className = 'display-6 fw-bold text-muted';
+    estadoClas.innerHTML = '<span class="text-muted">Sin criterios seleccionados</span>';
+    descClas.textContent = 'Marque los criterios que corresponden al residuo para continuar.';
+  } else if (activos === 1) {
+    contador.className = 'display-6 fw-bold text-warning';
+    estadoClas.innerHTML = '<span class="text-warning"><i class="bi bi-exclamation-triangle me-1"></i>1 criterio detectado — probable RESPEL</span>';
+    descClas.textContent = 'Con al menos un criterio, el residuo se clasifica como RESPEL según el Decreto 4741/2005.';
+  } else {
+    contador.className = 'display-6 fw-bold text-danger';
+    estadoClas.innerHTML = `<span class="text-danger"><i class="bi bi-exclamation-octagon-fill me-1"></i>${activos} criterios — RESPEL confirmado</span>`;
+    descClas.textContent = 'Múltiples criterios de peligrosidad detectados. Manejo RESPEL obligatorio.';
+  }
+}
+
+checks.forEach(chk => {
+  chk.addEventListener('change', function() {
+    const cardId = 'card-' + this.id.replace('criterio_', '');
+    const card = document.getElementById(cardId);
+    if (card) card.classList.toggle('border-danger', this.checked);
+    actualizarContador();
+  });
+});
+
+document.getElementById('form-peligrosidad').addEventListener('submit', function() {
+  const btn = document.getElementById('btn-evaluar');
+  btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Calculando resultado...';
+  btn.disabled = true;
+});
+</script>
+{% endblock %}

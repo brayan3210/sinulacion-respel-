@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}Glosario Técnico — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+
+      <div class="text-center mb-5">
+        <h1 class="fw-bold text-institucional">
+          <i class="bi bi-book me-2"></i>Glosario Técnico
+        </h1>
+        <p class="lead text-muted">
+          Definiciones clave para la comprensión del manejo integral de residuos en Colombia,
+          basadas en la normativa ambiental vigente.
+        </p>
+        <div class="input-group mx-auto" style="max-width:400px;">
+          <input type="text" class="form-control" id="buscar-termino" placeholder="Buscar término...">
+          <span class="input-group-text"><i class="bi bi-search"></i></span>
+        </div>
+      </div>
+
+      {% set terminos = [
+        {
+          'letra': 'A',
+          'terminos': [
+            ('Aprovechamiento', 'Proceso mediante el cual, a través de un manejo integral de los residuos sólidos, los materiales recuperados se reincorporan al ciclo económico y productivo, en forma eficiente, por medio de la reutilización, el reciclaje, la incineración con fines de generación de energía, el compostaje o cualquier otra modalidad que conlleve beneficios sanitarios, ambientales, sociales y/o económicos.', 'Decreto 1077/2015'),
+            ('Autoridad ambiental competente', 'Entidad con jurisdicción y competencia para otorgar o negar licencias ambientales y ejercer control sobre los generadores de RESPEL en su territorio. Puede ser la ANLA, las Corporaciones Autónomas Regionales (CAR), la DAGMA, el Área Metropolitana u otras, según la ubicación del generador.', 'Decreto 4741/2005'),
+          ]
+        },
+        {
+          'letra': 'C',
+          'terminos': [
+            ('Caracterización de residuos', 'Proceso de determinación de las propiedades físicas, químicas y biológicas de un residuo, con el fin de establecer su peligrosidad y la mejor alternativa de manejo.', 'Decreto 4741/2005'),
+            ('Corrosivo (criterio de peligrosidad)', 'Residuo que tiene la capacidad de destruir tejidos vivos (pH ≤ 2 o ≥ 12.5) o corroder metales a una tasa superior a 6.35 mm por año a 55°C. Ejemplo: ácidos fuertes, hidróxido de sodio concentrado.', 'Decreto 4741/2005, Art. 6'),
+            ('CRETIP+R', 'Acrónimo que agrupa los criterios de peligrosidad del Decreto 4741/2005: Corrosivo, Reactivo, Explosivo, Tóxico, Inflamable, Patogénico/Infeccioso y Radiactivo.', 'Decreto 4741/2005'),
+          ]
+        },
+        {
+          'letra': 'D',
+          'terminos': [
+            ('Disposición final', 'Proceso de aislar y confinar los residuos o desechos peligrosos, en especial los no aprovechables, en lugares especialmente seleccionados, diseñados y debidamente autorizados, para evitar la contaminación y los daños o riesgos a la salud humana y al ambiente.', 'Decreto 4741/2005'),
+          ]
+        },
+        {
+          'letra': 'E',
+          'terminos': [
+            ('Explosivo (criterio de peligrosidad)', 'Residuo que puede generar reacciones de descomposición que producen gases, aumentos de temperatura o presión capaces de causar daños físicos a la infraestructura o al ser humano. Ejemplo: peróxidos orgánicos, nitroglicerina.', 'Decreto 4741/2005, Art. 6'),
+          ]
+        },
+        {
+          'letra': 'G',
+          'terminos': [
+            ('Generador', 'Cualquier persona cuya actividad produzca residuos o desechos peligrosos. Si la persona es desconocida, será el poseedor de esos residuos.', 'Decreto 4741/2005, Art. 3'),
+            ('Gestor', 'Persona natural o jurídica que presta el servicio de recolección, transporte, tratamiento, aprovechamiento o disposición final de residuos peligrosos, mediante autorización ambiental vigente.', 'Decreto 4741/2005'),
+            ('GHS / SGA', 'Sistema Globalmente Armonizado de Clasificación y Etiquetado de Productos Químicos (Globally Harmonized System). Marco internacional para comunicar los peligros de sustancias y mezclas químicas mediante etiquetas y hojas de datos de seguridad (SDS).', 'ONU / GHS'),
+          ]
+        },
+        {
+          'letra': 'I',
+          'terminos': [
+            ('Inflamable (criterio de peligrosidad)', 'Residuo líquido con punto de inflamación inferior a 60°C (140°F), o residuo sólido con capacidad de ignición espontánea bajo condiciones normales. Ejemplo: gasolina, acetona, alcoholes de bajo peso molecular.', 'Decreto 4741/2005, Art. 6'),
+            ('Infeccioso / Patogénico (criterio de peligrosidad)', 'Residuo que contiene microorganismos o toxinas causantes de enfermedades, en concentraciones suficientes para representar riesgo. Ejemplo: sangre, cultivos microbiológicos, material anatomopatológico.', 'Decreto 4741/2005, Art. 6'),
+          ]
+        },
+        {
+          'letra': 'M',
+          'terminos': [
+            ('Manejo integral', 'Adopción de todas las medidas necesarias en las actividades de prevención, reducción y separación en la fuente, acopio, almacenamiento, transporte, aprovechamiento y/o valorización, tratamiento y/o disposición final, importación y exportación de residuos o desechos peligrosos.', 'Decreto 4741/2005'),
+          ]
+        },
+        {
+          'letra': 'R',
+          'terminos': [
+            ('RAEE', 'Residuos de Aparatos Eléctricos y Electrónicos. Todo aparato que necesita corriente eléctrica o campos electromagnéticos para funcionar correctamente y que ha llegado al final de su vida útil, incluyendo sus componentes, subconjuntos y consumibles.', 'Ley 1672/2013'),
+            ('Reactivo (criterio de peligrosidad)', 'Residuo que en condiciones normales puede experimentar cambios químicos rápidos sin detonar, reaccionar violentamente con agua, generar gases tóxicos o tener potencial de explosión. Ejemplo: sodio metálico, cianuro bajo condiciones ácidas.', 'Decreto 4741/2005, Art. 6'),
+            ('Reciclaje', 'Proceso mediante el cual se aprovechan y transforman los residuos sólidos recuperados y se devuelve a los materiales su potencialidad de reincorporación como materia prima para la fabricación de nuevos productos.', 'Decreto 1077/2015'),
+            ('Registro de Generadores', 'Sistema de información del IDEAM donde los grandes, medianos y algunos pequeños generadores de RESPEL reportan sus datos de generación y manejo. Regulado por la Resolución 1362/2007.', 'Resolución 1362/2007'),
+            ('Residuo aprovechable', 'Residuo que no tiene valor de uso directo o indirecto para quien lo genere, pero que es susceptible de incorporación a un proceso productivo. Ejemplo: papel, cartón, plástico, vidrio, metales.', 'Resolución 2184/2019'),
+            ('Residuo no aprovechable', 'Todo material o sustancia sólida o semisólida de origen orgánico o inorgánico que no ofrece ninguna posibilidad de aprovechamiento, reutilización o reincorporación en un proceso productivo. Se dispone en rellenos sanitarios.', 'Resolución 2184/2019'),
+            ('Residuo orgánico aprovechable', 'Residuo biodegradable que puede ser aprovechado mediante compostaje, lombricultura u otros procesos de valorización biológica. Incluye restos de alimentos y residuos de jardín.', 'Resolución 2184/2019'),
+            ('Residuo peligroso (RESPEL)', 'Residuo que, por sus características corrosivas, reactivas, explosivas, tóxicas, inflamables, infecciosas o radiactivas, puede causar riesgo o daño para la salud humana y el ambiente. Así mismo, se considera residuo peligroso los envases, empaques y embalajes que hayan estado en contacto con ellos.', 'Decreto 4741/2005, Art. 3'),
+            ('Residuo especial', 'Aquel que por su naturaleza, composición, tamaño, volumen y peso, necesidades de transporte, condiciones de almacenaje y compactación, no puede ser recolectado, manejado, tratado o dispuesto normalmente por la persona prestadora del servicio público de aseo.', 'Decreto 1077/2015'),
+            ('Responsabilidad extendida del productor (REP)', 'Principio de política ambiental según el cual los fabricantes e importadores de un producto son responsables de su gestión al final de la vida útil, incluyendo la financiación y organización de sistemas de recolección y reciclaje.', 'Ley 1672/2013'),
+          ]
+        },
+        {
+          'letra': 'S',
+          'terminos': [
+            ('SDS / MSDS', 'Hoja de Datos de Seguridad (Safety Data Sheet). Documento técnico estandarizado bajo el sistema GHS que proporciona información sobre los peligros de una sustancia química y las instrucciones para su manejo seguro, almacenamiento y transporte.', 'GHS-ONU / Decreto 4741/2005'),
+            ('Separación en la fuente', 'Clasificación de los residuos sólidos en el sitio donde se generan, para su posterior recolección y aprovechamiento diferenciado. Base de la Resolución 2184/2019 y la GTC 24.', 'Resolución 2184/2019'),
+          ]
+        },
+        {
+          'letra': 'T',
+          'terminos': [
+            ('Tóxico (criterio de peligrosidad)', 'Residuo con potencial de causar la muerte, lesiones graves o efectos perjudiciales para la salud del ser humano si se ingiere, inhala o entra en contacto con la piel. Incluye residuos con metales pesados, plaguicidas, cianuro, entre otros.', 'Decreto 4741/2005, Art. 6'),
+            ('Tratamiento', 'Conjunto de operaciones, procesos o técnicas mediante las cuales se modifican las características de los residuos o desechos peligrosos, teniendo en cuenta el riesgo y grado de peligrosidad de los mismos, para incrementar sus posibilidades de aprovechamiento y/o valorización o para minimizar los riesgos para la salud humana y el ambiente.', 'Decreto 4741/2005'),
+          ]
+        },
+      ] %}
+
+      {% for seccion in terminos %}
+      <div class="mb-4 termino-section">
+        <div class="letra-separador">{{ seccion.letra }}</div>
+        {% for termino, definicion, norma in seccion.terminos %}
+        <div class="card border-0 shadow-sm mb-3 termino-item">
+          <div class="card-body p-3 p-md-4">
+            <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
+              <h6 class="fw-bold text-institucional mb-0 termino-nombre">{{ termino }}</h6>
+              <span class="badge bg-light text-dark border small flex-shrink-0">
+                <i class="bi bi-journal me-1"></i>{{ norma }}
+              </span>
+            </div>
+            <p class="text-muted small mb-0">{{ definicion }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      <div class="alert alert-light border text-muted small mt-4">
+        <i class="bi bi-info-circle me-2 text-institucional"></i>
+        Las definiciones presentadas en este glosario son de carácter educativo y se basan en las normas
+        colombianas citadas. Para el texto oficial y completo de cada norma, consulte el portal del
+        <strong>Sistema Único de Información Normativa (SUIN)</strong> o la
+        <strong>Ventanilla Integral de Trámites Ambientales en Línea (VITAL)</strong> del Ministerio
+        de Ambiente y Desarrollo Sostenible.
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('buscar-termino').addEventListener('input', function() {
+  const query = this.value.toLowerCase().trim();
+  document.querySelectorAll('.termino-item').forEach(function(item) {
+    const nombre = item.querySelector('.termino-nombre').textContent.toLowerCase();
+    const texto = item.textContent.toLowerCase();
+    item.style.display = (!query || texto.includes(query)) ? '' : 'none';
+  });
+  document.querySelectorAll('.termino-section').forEach(function(sec) {
+    const visible = Array.from(sec.querySelectorAll('.termino-item')).some(i => i.style.display !== 'none');
+    sec.style.display = visible ? '' : 'none';
+  });
+});
+</script>
+{% endblock %}

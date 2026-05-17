@@ -1,0 +1,40 @@
+# Variables de entorno y claves API (NO subir nunca)
+.env
+*.env
+.env.*
+
+# Base de datos SQLite
+instance/
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.pyc
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+ENV/
+
+# Flask / sesiones
+flask_session/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+.AppleDouble
+
+# Logs
+*.log
+/tmp/

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{% if error_500 %}Error del servidor{% else %}Página no encontrada{% endif %} — SimuRESPEL Web{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center py-5">
+      {% if error_500 %}
+        <i class="bi bi-exclamation-octagon display-1 text-danger mb-3"></i>
+        <h1 class="fw-bold text-danger">Error interno</h1>
+        <p class="lead text-muted mb-4">El servidor encontró un problema inesperado. Por favor intente nuevamente.</p>
+      {% else %}
+        <i class="bi bi-search display-1 text-muted mb-3"></i>
+        <h1 class="fw-bold text-institucional">404</h1>
+        <h3 class="fw-semibold mb-3">Página no encontrada</h3>
+        <p class="lead text-muted mb-4">La página que busca no existe o fue movida.</p>
+      {% endif %}
+      <div class="d-flex flex-wrap gap-2 justify-content-center">
+        <a href="{{ url_for('main.index') }}" class="btn btn-institucional px-4">
+          <i class="bi bi-house me-2"></i>Ir al inicio
+        </a>
+        <a href="{{ url_for('main.simulacion') }}" class="btn btn-outline-secondary px-4">
+          <i class="bi bi-play-circle me-2"></i>Iniciar simulación
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
